@@ -27,7 +27,9 @@
         #loginUsername, #loginPassword { text-align: left; }
         input[type="date"] { padding: 10px; border: 1px solid #90CAF9; border-radius: 6px; font-size: 16px; font-weight: bold; color: #1565C0; background-color: #FAFCFF; }
         input:focus { outline: none; border-color: #1565C0; background-color: #FFF; }
-        input:disabled { background-color: #EEEEEE; color: #9E9E9E; cursor: not-allowed; border-color: #CCC; }
+        
+        /* 鎖定狀態樣式 */
+        input:disabled { background-color: #ECEFF1; color: #78909C; cursor: not-allowed; border-color: #CFD8DC; }
         
         .btn-group-row { display: flex; gap: 10px; align-items: center; }
         .save-btn { padding: 10px 20px; background-color: #1976D2; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; height: 42px; }
@@ -62,8 +64,8 @@
         .modal-content h3 { margin-top: 0; color: #0D47A1; border-bottom: 2px solid #E3F2FD; padding-bottom: 10px; }
         
         /* 歷史篩選列 */
-        .history-filter-bar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; background: #F5F9FF; padding: 10px; border-radius: 8px; border: 1px solid #E3F2FD;}
-        .history-filter-bar select { padding: 6px; border-radius: 4px; border: 1px solid #90CAF9; color: #0D47A1; font-weight: bold;}
+        .history-filter-bar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; background: #F5F9FF; padding: 12px; border-radius: 8px; border: 1px solid #BBDEFB; flex-wrap: wrap;}
+        .history-filter-bar select { padding: 6px 10px; border-radius: 6px; border: 1px solid #90CAF9; color: #0D47A1; font-weight: bold; font-size: 14px; outline: none; background: #FFF;}
 
         .history-table-container { max-height: 45vh; overflow-y: auto; border: 1px solid #BBDEFB; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.02); }
         .history-table { width: 100%; border-collapse: collapse; }
@@ -78,8 +80,14 @@
         .tier-row label { margin-bottom: 0; font-weight: bold; color: #546E7A; min-width: 60px;}
         .tier-row input[type="number"] { padding: 6px; font-size: 14px; flex: 1; border: 1px solid #90CAF9; font-weight: bold; color: #1565C0; text-align: right;}
 
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .btn-cancel { background: #90CAF9; color: #0D47A1; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;}
+        .btn-cancel:hover { background: #BBDEFB; }
+        .btn-confirm { background: #1976D2; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;}
+        .btn-confirm:hover { background: #115293; }
+
         #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
-        .spinner { border: 6px solid #E3F2FD; border-top: 6px solid #1565C0; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; }
+        .spinner { border: 6px solid #E3F2FD; border-top: 6px solid #1565C0; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 15px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -87,7 +95,7 @@
 
 <div id="loadingOverlay">
     <div class="spinner"></div>
-    <p style="color:#1565C0; font-weight:bold; margin-top:10px;">雲端同步中...</p>
+    <p style="color:#1565C0; font-weight:bold; margin-top:10px;">雲端資料同步中...</p>
 </div>
 
 <div class="container">
@@ -112,14 +120,14 @@
         </div>
         <div class="input-group">
             <label>【本日單日】營業額 ($)</label>
-            <input type="number" id="dailyRevInput" placeholder="輸入今日業績" value="0">
+            <input type="number" id="dailyRevInput" placeholder="輸入當日業績" value="0">
         </div>
         <div class="input-group">
             <label>【本日單日】毛利 ($)</label>
-            <input type="number" id="dailyProfInput" placeholder="輸入今日毛利" value="0">
+            <input type="number" id="dailyProfInput" placeholder="輸入當日毛利" value="0">
         </div>
         <div class="btn-group-row">
-            <button class="save-btn" onclick="saveDailyData()">💾 儲存今日數據</button>
+            <button class="save-btn" id="btnSave" onclick="saveDailyData()">💾 儲存今日數據</button>
             <button class="history-btn" onclick="openHistoryModal()">📅 歷史資料管理</button>
         </div>
     </div>
@@ -209,7 +217,7 @@
             <div class="tier-row"><input type="radio" name="activeProf" value="3"> <label>門檻四:</label> <input type="number" id="cfgProf4"></div>
         </div>
         <div class="settings-section">
-            <h4>各月權重分配 (%)</h4>
+            <h4>本季各月權重分配 (%)</h4>
             <div style="display:flex; gap:10px;">
                 <div class="tier-row" style="flex:1"><label>月1:</label> <input type="number" id="cfgW1"> %</div>
                 <div class="tier-row" style="flex:1"><label>月2:</label> <input type="number" id="cfgW2"> %</div>
@@ -224,11 +232,10 @@
 <div id="historyModal" class="modal-overlay">
     <div class="modal-content" style="max-width: 850px;">
         <h3>📅 歷史資料管理</h3>
-        
         <div class="history-filter-bar">
-            <label>篩選年份：</label>
+            <label style="font-weight:bold; color:#0D47A1;">篩選年份：</label>
             <select id="histYearSelect" onchange="openHistoryModal()"></select>
-            <label>季度：</label>
+            <label style="font-weight:bold; color:#0D47A1;">季度：</label>
             <select id="histQuarterSelect" onchange="openHistoryModal()">
                 <option value="Q1">第一季 (1-3月)</option>
                 <option value="Q2">第二季 (4-6月)</option>
@@ -237,7 +244,6 @@
             </select>
             <p id="historySubtitle" style="margin:0 0 0 auto; font-size:13px; color:#546E7A;"></p>
         </div>
-
         <div class="history-table-container" id="historyTableContainer"></div>
         <div class="modal-actions"><button class="btn-cancel" onclick="closeHistoryModal()">關閉</button></div>
     </div>
@@ -250,46 +256,33 @@
     const BIN_ID = '69f21039856a682189885d65';
     const API_KEY = '$2a$10$7JIthCtCRLFeujaGc3lx7OlEu4qmy/j5af7ZFP01y57byaUo1bDra';
 
-    // 預設季度目標 (全年度共用初始值)
     const DEFAULT_CONFIG = {
         revTiers: [8300000, 9100000, 9900000, 11000000],
         profTiers: [2650000, 2900000, 3200000, 3400000],
         activeRevIdx: 2, activeProfIdx: 2, weights: [25, 45, 30] 
     };
 
-    // 🚀 全新結構：支援 configs[year][quarter]
-    let cloudData = { 
-        db: {}, 
-        configs: {} 
-    };
-
+    let cloudData = { db: {}, configs: {} };
     let currentRole = 'employee'; 
     const tierNames = ["門檻一", "門檻二", "門檻三", "門檻四"];
 
     function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
     function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
 
-    // --- 核心工具函數 ---
+    // --- 日期工具 ---
     function getQuarter(date) {
         const m = date.getMonth() + 1;
-        if (m <= 3) return 'Q1';
-        if (m <= 6) return 'Q2';
-        if (m <= 9) return 'Q3';
-        return 'Q4';
+        if (m <= 3) return 'Q1'; if (m <= 6) return 'Q2'; if (m <= 9) return 'Q3'; return 'Q4';
     }
-
     function getQuarterMonths(q) {
-        if (q === 'Q1') return [1, 2, 3];
-        if (q === 'Q2') return [4, 5, 6];
-        if (q === 'Q3') return [7, 8, 9];
-        return [10, 11, 12];
+        if (q === 'Q1') return [1, 2, 3]; if (q === 'Q2') return [4, 5, 6];
+        if (q === 'Q3') return [7, 8, 9]; return [10, 11, 12];
     }
+    function getMonthDays(year, month) { return new Date(year, month, 0).getDate(); }
+    function getTodayString() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+    function formatNum(num) { return Math.round(num).toLocaleString('en-US'); }
 
-    function getMonthDays(year, month) {
-        return new Date(year, month, 0).getDate();
-    }
-
-    // --- 雲端同步 ---
+    // --- 雲端存取 ---
     async function loadFromCloud() {
         showLoading();
         try {
@@ -305,19 +298,16 @@
     }
 
     async function saveToCloud() {
-        // 先在 UI 上立即計算一次，讓使用者感覺速度變快
         calculateDashboard();
-        showLoading();
         try {
             await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                 method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
                 body: JSON.stringify(cloudData)
             });
         } catch (e) { alert('雲端存檔失敗，請檢查網路。'); }
-        hideLoading();
     }
 
-    // --- 權限與登入 ---
+    // --- 權限與登入系統 ---
     function changeRole() {
         if (document.getElementById('roleSelect').value === 'manager') {
             document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = '';
@@ -329,287 +319,206 @@
     function verifyLogin() {
         if (document.getElementById('loginUsername').value === '113' && document.getElementById('loginPassword').value === '074322') {
             document.getElementById('loginModal').style.display = 'none'; currentRole = 'manager'; applyRoleRestrictions();
+            if(document.getElementById('historyModal').style.display === 'flex') openHistoryModal();
         } else { document.getElementById('loginError').style.display = 'block'; }
     }
     function cancelLogin() { document.getElementById('loginModal').style.display = 'none'; document.getElementById('roleSelect').value = 'employee'; currentRole = 'employee'; applyRoleRestrictions(); }
     function handleLoginEnter(e) { if (e.key === 'Enter') verifyLogin(); }
 
     function applyRoleRestrictions() {
+        const settingsBtn = document.getElementById('btnSettings');
         const dateInput = document.getElementById('currentDate');
+        
         if (currentRole === 'employee') {
-            document.getElementById('btnSettings').style.display = 'none';
-            dateInput.value = getTodayString(); dateInput.disabled = true;
+            settingsBtn.style.display = 'none';
+            // 🔥 更新：員工權限不再鎖死日期選擇器，讓其可查看其他天
+            dateInput.disabled = false; 
         } else {
-            document.getElementById('btnSettings').style.display = 'inline-block'; dateInput.disabled = false;
+            settingsBtn.style.display = 'inline-block';
+            dateInput.disabled = false;
         }
         loadInputForDate(); 
     }
 
-    // --- 設定管理 (全年度版) ---
-    function openSettingsModal() {
-        if(currentRole !== 'manager') return;
-        const d = new Date(document.getElementById('currentDate').value);
-        const y = d.getFullYear(); const q = getQuarter(d);
-        
-        document.getElementById('settingsTitle').innerText = `${y} ${q} 目標設定`;
-        
-        if(!cloudData.configs[y]) cloudData.configs[y] = {};
-        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        
-        let c = cloudData.configs[y][q];
-        for(let i=0; i<4; i++) {
-            document.getElementById(`cfgRev${i+1}`).value = c.revTiers[i];
-            document.getElementById(`cfgProf${i+1}`).value = c.profTiers[i];
-        }
-        document.getElementsByName('activeRev')[c.activeRevIdx || 0].checked = true;
-        document.getElementsByName('activeProf')[c.activeProfIdx || 0].checked = true;
-        document.getElementById('cfgW1').value = c.weights[0];
-        document.getElementById('cfgW2').value = c.weights[1];
-        document.getElementById('cfgW3').value = c.weights[2];
-        document.getElementById('settingsModal').style.display = 'flex';
-    }
-
-    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
-    
-    async function saveSettings() {
-        const d = new Date(document.getElementById('currentDate').value);
-        const y = d.getFullYear(); const q = getQuarter(d);
-        
-        let w = [Number(document.getElementById('cfgW1').value), Number(document.getElementById('cfgW2').value), Number(document.getElementById('cfgW3').value)];
-        if((w[0]+w[1]+w[2]) !== 100) { document.getElementById('weightWarning').innerText = "警告：權重加總須為 100%！"; return; }
-        
-        let c = cloudData.configs[y][q];
-        for(let i=0; i<4; i++) {
-            c.revTiers[i] = Number(document.getElementById(`cfgRev${i+1}`).value);
-            c.profTiers[i] = Number(document.getElementById(`cfgProf${i+1}`).value);
-        }
-        c.activeRevIdx = Number(document.querySelector('input[name="activeRev"]:checked').value);
-        c.activeProfIdx = Number(document.querySelector('input[name="activeProf"]:checked').value);
-        c.weights = w;
-        
-        closeSettingsModal();
-        await saveToCloud();
-        alert(`${y} ${q} 目標同步成功！`);
-    }
-
-    // --- 歷史紀錄 (優化：篩選與分頁) ---
-    function openHistoryModal() {
-        const container = document.getElementById('historyTableContainer');
-        const yearSelect = document.getElementById('histYearSelect');
-        const qSelect = document.getElementById('histQuarterSelect');
-        
-        // 初始化年份選單 (如果還沒初始化過)
-        if (yearSelect.innerHTML === "") {
-            const currentYear = new Date().getFullYear();
-            for(let i = currentYear; i >= 2024; i--) {
-                yearSelect.add(new Option(i, i));
-            }
-            // 預設選中當前季度
-            qSelect.value = getQuarter(new Date(document.getElementById('currentDate').value));
-        }
-
-        const targetY = yearSelect.value;
-        const targetQ = qSelect.value;
-        const targetMonths = getQuarterMonths(targetQ);
-
-        // 篩選出該年該季度的資料
-        const filteredDates = Object.keys(cloudData.db).filter(dateStr => {
-            const d = new Date(dateStr);
-            return d.getFullYear().toString() === targetY && targetMonths.includes(d.getMonth() + 1);
-        }).sort((a, b) => new Date(b) - new Date(a));
-
-        document.getElementById('historySubtitle').innerText = currentRole === 'manager' ? "主管權限：修改後按更新。" : "唯讀模式：僅主管可修改。";
-
-        let html = '<table class="history-table"><thead><tr><th>日期</th><th>營業額</th><th>毛利</th>';
-        if (currentRole === 'manager') html += '<th>操作</th>';
-        html += '</tr></thead><tbody>';
-
-        if(filteredDates.length === 0) {
-            html += `<tr><td colspan="${currentRole === 'manager' ? 4 : 3}" style="color:#777; padding:30px;">該季度尚無紀錄。</td></tr>`;
-        } else {
-            filteredDates.forEach(date => {
-                const val = cloudData.db[date];
-                html += `<tr><td style="font-weight:bold; color:#1565C0;">${date}</td>`;
-                if (currentRole === 'manager') {
-                    html += `
-                        <td><input type="number" id="hist_r_${date}" value="${val.r}"></td>
-                        <td><input type="number" id="hist_p_${date}" value="${val.p}"></td>
-                        <td><button class="btn-update" onclick="updateHistory('${date}')">更新</button>
-                            <button class="btn-delete" onclick="deleteHistory('${date}')">刪除</button></td>
-                    `;
-                } else {
-                    html += `<td class="readonly-num">$ ${formatNum(val.r)}</td><td class="readonly-num">$ ${formatNum(val.p)}</td>`;
-                }
-                html += `</tr>`;
-            });
-        }
-        html += '</tbody></table>';
-        container.innerHTML = html;
-        document.getElementById('historyModal').style.display = 'flex';
-    }
-
-    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
-    async function updateHistory(date) {
-        cloudData.db[date] = { r: Number(document.getElementById(`hist_r_${date}`).value), p: Number(document.getElementById(`hist_p_${date}`).value) };
-        await saveToCloud();
-    }
-    async function deleteHistory(date) {
-        if(confirm(`刪除 ${date} 紀錄？`)) { delete cloudData.db[date]; await saveToCloud(); openHistoryModal(); }
-    }
-
-    // --- 首頁打卡 ---
-    async function saveDailyData() {
-        const dateStr = document.getElementById('currentDate').value;
-        const rev = Number(document.getElementById('dailyRevInput').value);
-        const prof = Number(document.getElementById('dailyProfInput').value);
-        if(!dateStr) return;
-        if (currentRole === 'employee' && dateStr !== getTodayString()) return;
-
-        cloudData.db[dateStr] = { r: rev, p: prof };
-        await saveToCloud();
-        alert(`數據同步至雲端成功！`);
-    }
-
+    // --- 下載與輸入連動邏輯 ---
     function loadInputForDate() {
         const dateStr = document.getElementById('currentDate').value;
+        const revIn = document.getElementById('dailyRevInput');
+        const profIn = document.getElementById('dailyProfInput');
+        const saveBtn = document.getElementById('btnSave');
+        const todayStr = getTodayString();
+
+        // 載入該日數據
         if(cloudData.db[dateStr]) {
-            document.getElementById('dailyRevInput').value = cloudData.db[dateStr].r; 
-            document.getElementById('dailyProfInput').value = cloudData.db[dateStr].p;
+            revIn.value = cloudData.db[dateStr].r; 
+            profIn.value = cloudData.db[dateStr].p;
         } else {
-            document.getElementById('dailyRevInput').value = ""; 
-            document.getElementById('dailyProfInput').value = "";
+            revIn.value = ""; profIn.value = "";
         }
+
+        // 🔥 重點邏輯：判斷目前日期與權限，決定是否開放編輯
+        if (currentRole === 'employee') {
+            if (dateStr === todayStr) {
+                // 是今天：開放輸入，顯示儲存按鈕
+                revIn.disabled = false;
+                profIn.disabled = false;
+                saveBtn.style.display = 'inline-block';
+            } else {
+                // 不是今天：鎖定輸入，隱藏儲存按鈕 (實現唯讀查看)
+                revIn.disabled = true;
+                profIn.disabled = true;
+                saveBtn.style.display = 'none';
+            }
+        } else {
+            // 主管權限：隨時可以修改與儲存
+            revIn.disabled = false;
+            profIn.disabled = false;
+            saveBtn.style.display = 'inline-block';
+        }
+
         calculateDashboard();
     }
 
-    // --- 核心計算 (全年度滾動版) ---
+    // --- 核心計算 (省略細節保持效率) ---
     function calculateDashboard() {
         const selectedDateStr = document.getElementById('currentDate').value;
         if (!selectedDateStr) return;
-        
         const d = new Date(selectedDateStr);
-        const y = d.getFullYear(); const q = getQuarter(d);
-        const m = d.getMonth() + 1; const day = d.getDate();
-        
-        // 如果該季度還沒設定過，自動補上預設
+        const y = d.getFullYear(); const m = d.getMonth() + 1; const day = d.getDate(); const q = getQuarter(d);
         if(!cloudData.configs[y]) cloudData.configs[y] = {};
         if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        
         const c = cloudData.configs[y][q];
         const targetRev = c.revTiers[c.activeRevIdx];
         const targetProf = c.profTiers[c.activeProfIdx];
         const qMonths = getQuarterMonths(q);
-        const mIdx = qMonths.indexOf(m); // 本月是本季第幾個月(0,1,2)
-
+        const mIdx = qMonths.indexOf(m);
         document.getElementById('mRevTargetName').innerText = tierNames[c.activeRevIdx];
         document.getElementById('mProfTargetName').innerText = tierNames[c.activeProfIdx];
         document.getElementById('qTargetRevDisp').innerText = formatNum(targetRev);
         document.getElementById('qTargetProfDisp').innerText = formatNum(targetProf);
-
-        const dailyRevInput = Number(document.getElementById('dailyRevInput').value) || 0;
-        const dailyProfInput = Number(document.getElementById('dailyProfInput').value) || 0;
-
-        let mRevActual = 0, mProfActual = 0, qRevActual = 0, qProfActual = 0;
-        let mRevBeforeToday = 0, mProfBeforeToday = 0, pastMonthsRev = 0, pastMonthsProf = 0;
-
-        for (const [dateKey, val] of Object.entries(cloudData.db)) {
-            const ed = new Date(dateKey);
+        const drIn = Number(document.getElementById('dailyRevInput').value) || 0;
+        const dpIn = Number(document.getElementById('dailyProfInput').value) || 0;
+        let mRAct = 0, mPAct = 0, qRAct = 0, qPAct = 0, mRBef = 0, mPBef = 0, pMRev = 0, pMProf = 0;
+        for (const [dk, val] of Object.entries(cloudData.db)) {
+            const ed = new Date(dk);
             if (ed.getFullYear() === y && getQuarter(ed) === q) {
-                if (dateKey < selectedDateStr) {
-                    qRevActual += val.r; qProfActual += val.p;
-                    if ((ed.getMonth() + 1) < m) { pastMonthsRev += val.r; pastMonthsProf += val.p; }
-                    else if ((ed.getMonth() + 1) === m) { mRevBeforeToday += val.r; mProfBeforeToday += val.p; }
+                if (dk < selectedDateStr) {
+                    qRAct += val.r; qPAct += val.p;
+                    if ((ed.getMonth() + 1) < m) { pMRev += val.r; pMProf += val.p; }
+                    else if ((ed.getMonth() + 1) === m) { mRBef += val.r; mPBef += val.p; }
                 }
             }
         }
-        
-        mRevActual = mRevBeforeToday + dailyRevInput;
-        mProfActual = mProfBeforeToday + dailyProfInput;
-        qRevActual += dailyRevInput;
-        qProfActual += dailyProfInput;
-
-        // 當月滾動調整
-        let remWeightSum = 0; for(let i = mIdx; i < 3; i++) { remWeightSum += c.weights[i]; }
-        let weightRatio = remWeightSum > 0 ? (c.weights[mIdx] / remWeightSum) : 1;
-        const mTargetRev = Math.max(0, (targetRev - pastMonthsRev) * weightRatio);
-        const mTargetProf = Math.max(0, (targetProf - pastMonthsProf) * weightRatio);
-
-        // 滾動應達 (至今日)
-        const daysInM = getMonthDays(y, m);
-        const mExpRev = mTargetRev * (day / daysInM);
-        const mExpProf = mTargetProf * (day / daysInM);
-
-        // 明日需達
-        const daysLeftAfterToday = daysInM - day;
-        const nextDailyRev = daysLeftAfterToday <= 0 ? 0 : Math.max(0, (mTargetRev - mRevActual) / daysLeftAfterToday);
-        const nextDailyProf = daysLeftAfterToday <= 0 ? 0 : Math.max(0, (mTargetProf - mProfActual) / daysLeftAfterToday);
-
-        // 本日動態應達 (滾動目標)
-        const daysLeftInclToday = daysInM - day + 1;
-        const mReqTodayRev = Math.max(0, (mTargetRev - mRevBeforeToday) / daysLeftInclToday);
-        const mReqTodayProf = Math.max(0, (mTargetProf - mProfBeforeToday) / daysLeftInclToday);
-
-        // 當日達成率
-        const mRateRev = mReqTodayRev === 0 ? (dailyRevInput > 0 ? 100 : 0) : (dailyRevInput / mReqTodayRev) * 100;
-        const mRateProf = mReqTodayProf === 0 ? (dailyProfInput > 0 ? 100 : 0) : (dailyProfInput / mReqTodayProf) * 100;
-
-        // 全季數據
-        let qWeightAcc = 0;
-        for(let i=0; i<=mIdx; i++) {
-            let daysPassed = (i === mIdx) ? day : getMonthDays(y, qMonths[i]);
-            qWeightAcc += (daysPassed / getMonthDays(y, qMonths[i])) * (c.weights[i]/100);
-        }
-        const qExpRev = targetRev * qWeightAcc;
-        const qExpProf = targetProf * qWeightAcc;
-
-        // 更新 UI
-        document.getElementById('mSumRev').innerText = formatNum(mRevActual); document.getElementById('mSumProf').innerText = formatNum(mProfActual);
-        document.getElementById('mTargetRev').innerText = formatNum(mTargetRev); document.getElementById('mTargetProf').innerText = formatNum(mTargetProf);
-        document.getElementById('mExpRev').innerText = formatNum(mExpRev); document.getElementById('mExpProf').innerText = formatNum(mExpProf);
-        document.getElementById('mReqDailyRev').innerText = formatNum(nextDailyRev) + " /天"; document.getElementById('mReqDailyProf').innerText = formatNum(nextDailyProf) + " /天";
-        document.getElementById('mDistRev').innerText = formatNum(Math.max(0, mTargetRev - mRevActual)); document.getElementById('mDistProf').innerText = formatNum(Math.max(0, mTargetProf - mProfActual));
-        document.getElementById('mReqTodayRevDisp').innerText = formatNum(mReqTodayRev); document.getElementById('mReqTodayProfDisp').innerText = formatNum(mReqTodayProf);
-        
-        document.getElementById('qSumRev').innerText = formatNum(qRevActual); document.getElementById('qSumProf').innerText = formatNum(qProfActual);
-        document.getElementById('qExpRev').innerText = formatNum(qExpRev); document.getElementById('qExpProf').innerText = formatNum(qExpProf);
-        document.getElementById('qReqDailyRev').innerText = formatNum(Math.max(0, (targetRev - qRevActual)/1)) + " /天"; // 簡化處理
-        document.getElementById('qDistRev').innerText = formatNum(Math.max(0, targetRev - qRevActual)); document.getElementById('qDistProf').innerText = formatNum(Math.max(0, targetProf - qProfActual));
-
-        updateBar('mBarRev', 'mRateTextRev', 'mDistBoxRev', mRateRev, false, 'mMotRev', day);
-        updateBar('mBarProf', 'mRateTextProf', 'mDistBoxProf', mRateProf, false, 'mMotProf', day);
-        updateBar('qBarRev', 'qRateTextRev', null, (targetRev === 0 ? 0 : (qRevActual / targetRev) * 100), true, null, day);
-        updateBar('qBarProf', 'qRateTextProf', null, (targetProf === 0 ? 0 : (qProfActual / targetProf) * 100), true, null, day);
+        mRAct = mRBef + drIn; mPAct = mPBef + dpIn; qRAct += drIn; qPAct += dpIn;
+        let remW = 0; for(let i = mIdx; i < 3; i++) remW += c.weights[i];
+        let wR = remW > 0 ? (c.weights[mIdx] / remW) : 1;
+        const mTR = Math.max(0, (targetRev - pMRev) * wR); const mTP = Math.max(0, (targetProf - pMProf) * wR);
+        const mDs = getMonthDays(y, m);
+        const daysLI = mDs - day + 1;
+        const mRTR = Math.max(0, (mTR - mRBef) / daysLI); const mRTP = Math.max(0, (mTP - mPBef) / daysLI);
+        const mRR = mRTR === 0 ? (drIn > 0 ? 100 : 0) : (drIn / mRTR) * 100;
+        const mRP = mRTP === 0 ? (dpIn > 0 ? 100 : 0) : (dpIn / mRTP) * 100;
+        const dLA = mDs - day;
+        document.getElementById('mSumRev').innerText = formatNum(mRAct); document.getElementById('mSumProf').innerText = formatNum(mPAct);
+        document.getElementById('mTargetRev').innerText = formatNum(mTR); document.getElementById('mTargetProf').innerText = formatNum(mTP);
+        document.getElementById('mExpRev').innerText = formatNum(mTR * (day/mDs)); document.getElementById('mExpProf').innerText = formatNum(mTP * (day/mDs));
+        document.getElementById('mReqDailyRev').innerText = formatNum(dLA<=0?0:(mTR-mRAct)/dLA)+" /天"; document.getElementById('mReqDailyProf').innerText = formatNum(dLA<=0?0:(mTP-mPAct)/dLA)+" /天";
+        document.getElementById('mDistRev').innerText = formatNum(Math.max(0,mTR-mRAct)); document.getElementById('mDistProf').innerText = formatNum(Math.max(0,mTP-mPAct));
+        document.getElementById('mReqTodayRevDisp').innerText = formatNum(mRTR); document.getElementById('mReqTodayProfDisp').innerText = formatNum(mRTP);
+        updateBar('mBarRev', 'mRateTextRev', 'mDistBoxRev', mRR, false, 'mMotRev', day);
+        updateBar('mBarProf', 'mRateTextProf', 'mDistBoxProf', mRP, false, 'mMotProf', day);
+        let qWAcc = 0; for(let i=0; i<=mIdx; i++) { let dP = (i===mIdx)?day:getMonthDays(y,qMonths[i]); qWAcc += (dP/getMonthDays(y,qMonths[i]))*(c.weights[i]/100); }
+        document.getElementById('qSumRev').innerText = formatNum(qRAct); document.getElementById('qSumProf').innerText = formatNum(qPAct);
+        document.getElementById('qExpRev').innerText = formatNum(targetRev*qWAcc); document.getElementById('qExpProf').innerText = formatNum(targetProf*qWAcc);
+        document.getElementById('qDistRev').innerText = formatNum(Math.max(0,targetRev-qRAct)); document.getElementById('qDistProf').innerText = formatNum(Math.max(0,targetProf-qPAct));
+        updateBar('qBarRev', 'qRateTextRev', null, (targetRev===0?0:(qRAct/targetRev)*100), true, null, day);
+        updateBar('qBarProf', 'qRateTextProf', null, (targetProf===0?0:(qPAct/targetProf)*100), true, null, day);
     }
 
-    function updateBar(barId, textId, targetBoxId, rate, isQ, motId, dayOf) {
-        const bar = document.getElementById(barId); const textEl = document.getElementById(textId);
-        let displayW = rate > 100 ? 100 : rate; let rateStr = rate.toFixed(1) + '%';
-        bar.style.width = displayW + '%'; bar.innerText = displayW > 10 ? rateStr : ''; textEl.innerText = rateStr;
-
-        if (!isQ && targetBoxId) {
-            document.getElementById(targetBoxId).style.backgroundColor = rate >= 100 ? '#FFCDD2' : '#A5D6A7';
-        }
-        if (motId) {
-            const motEl = document.getElementById(motId);
-            const successMsgs = ["🎉 太棒了！今日動態目標順利拿下！", "🔥 火力全開！請繼續保持這個氣勢！", "✨ 完美達標！今天的努力沒有白費！", "🚀 業績達陣！門市團隊超讚的表現！"];
-            const cheerMsgs = ["💪 還差一點點！穩住陣腳，明天繼續衝刺！", "🏃‍♂️ 加把勁！調整腳步我們明天把它贏回來！", "🌟 別氣餒！把今天的不足化為明天的動力！", "🎯 目標就在前方，繼續加油千萬不要放棄！"];
-            let msgIdx = (dayOf ? dayOf : 1) % 4; 
-            if (rate >= 100) { motEl.innerText = successMsgs[msgIdx]; motEl.style.color = '#C62828'; } 
-            else { motEl.innerText = cheerMsgs[msgIdx]; motEl.style.color = '#1565C0'; }
+    function updateBar(bid, tid, tbx, r, isq, mid, doy) {
+        const b = document.getElementById(bid); const t = document.getElementById(tid);
+        let dw = r > 100 ? 100 : r; let rs = r.toFixed(1) + '%';
+        b.style.width = dw + '%'; b.innerText = dw > 10 ? rs : ''; t.innerText = rs;
+        if (!isq && tbx) document.getElementById(tbx).style.backgroundColor = r >= 100 ? '#FFCDD2' : '#A5D6A7';
+        if (mid) {
+            const me = document.getElementById(mid);
+            const sm = ["🎉 太棒了！今日動態目標順利拿下！", "🔥 火力全開！請繼續保持這個氣勢！", "✨ 完美達標！今天的努力沒有白費！", "🚀 業績達陣！門市團隊超讚的表現！"];
+            const cm = ["💪 還差一點點！穩住陣腳，明天繼續衝刺！", "🏃‍♂️ 加把勁！調整腳步我們明天把它贏回來！", "🌟 別氣餒！把今天的不足化為明天的動力！", "🎯 目標就在前方，繼續加油千萬不要放棄！"];
+            let idx = (doy ? doy : 1) % 4;
+            me.innerText = r >= 100 ? sm[idx] : cm[idx]; me.style.color = r >= 100 ? '#C62828' : '#1565C0';
         }
     }
 
-    function getTodayString() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+    // --- 設定管理與歷史管理 (其餘邏輯不變) ---
+    function openSettingsModal() {
+        if(currentRole !== 'manager') return;
+        const d = new Date(document.getElementById('currentDate').value);
+        const y = d.getFullYear(); const q = getQuarter(d);
+        document.getElementById('settingsTitle').innerText = `${y} 年 ${q} 目標設定`;
+        if(!cloudData.configs[y]) cloudData.configs[y] = {};
+        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        let c = cloudData.configs[y][q];
+        for(let i=0; i<4; i++) {
+            document.getElementById(`cfgRev${i+1}`).value = c.revTiers[i]; document.getElementById(`cfgProf${i+1}`).value = c.profTiers[i];
+        }
+        document.getElementsByName('activeRev')[c.activeRevIdx || 0].checked = true; document.getElementsByName('activeProf')[c.activeProfIdx || 0].checked = true;
+        document.getElementById('cfgW1').value = c.weights[0]; document.getElementById('cfgW2').value = c.weights[1]; document.getElementById('cfgW3').value = c.weights[2];
+        document.getElementById('settingsModal').style.display = 'flex';
+    }
+    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
+    async function saveSettings() {
+        const d = new Date(document.getElementById('currentDate').value); const y = d.getFullYear(); const q = getQuarter(d);
+        let w = [Number(document.getElementById('cfgW1').value), Number(document.getElementById('cfgW2').value), Number(document.getElementById('cfgW3').value)];
+        if((w[0]+w[1]+w[2]) !== 100) { document.getElementById('weightWarning').innerText = "警告：權重加總須為 100%！"; return; }
+        let c = cloudData.configs[y][q];
+        for(let i=0; i<4; i++) { c.revTiers[i] = Number(document.getElementById(`cfgRev${i+1}`).value); c.profTiers[i] = Number(document.getElementById(`cfgProf${i+1}`).value); }
+        c.activeRevIdx = Number(document.querySelector('input[name="activeRev"]:checked').value);
+        c.activeProfIdx = Number(document.querySelector('input[name="activeProf"]:checked').value);
+        c.weights = w; closeSettingsModal(); showLoading(); await saveToCloud(); alert("設定同步成功！"); hideLoading();
+    }
+    function openHistoryModal() {
+        const con = document.getElementById('historyTableContainer'); const sub = document.getElementById('historySubtitle');
+        const ys = document.getElementById('histYearSelect'); const qs = document.getElementById('histQuarterSelect');
+        if (ys.innerHTML === "") {
+            const cy = new Date().getFullYear(); for(let i = cy+1; i >= 2024; i--) ys.add(new Option(i + " 年", i));
+            ys.value = new Date(document.getElementById('currentDate').value).getFullYear();
+            qs.value = getQuarter(new Date(document.getElementById('currentDate').value));
+        }
+        sub.innerText = currentRole === 'manager' ? "主管權限：修改後按更新。" : "唯讀模式：僅主管可修改。";
+        const ty = ys.value; const tq = qs.value; const tm = getQuarterMonths(tq);
+        const fds = Object.keys(cloudData.db).filter(dk => { const d = new Date(dk); return d.getFullYear().toString() === ty && tm.includes(d.getMonth() + 1); }).sort((a, b) => new Date(b) - new Date(a));
+        let h = '<table class="history-table"><thead><tr><th>日期</th><th>營業額</th><th>毛利</th>';
+        if (currentRole === 'manager') h += '<th>操作</th>';
+        h += '</tr></thead><tbody>';
+        if(fds.length === 0) h += `<tr><td colspan="${currentRole==='manager'?4:3}" style="color:#777; padding:30px;">所選季度尚無紀錄。</td></tr>`;
+        else fds.forEach(dk => {
+            const v = cloudData.db[dk]; h += `<tr><td style="font-weight:bold; color:#1565C0;">${dk}</td>`;
+            if (currentRole === 'manager') h += `<td><input type="number" id="hist_r_${dk}" value="${v.r}"></td><td><input type="number" id="hist_p_${dk}" value="${v.p}"></td><td><button class="btn-update" onclick="updateHistory('${dk}')">更新</button><button class="btn-delete" onclick="deleteHistory('${dk}')">刪除</button></td>`;
+            else h += `<td class="readonly-num">$ ${formatNum(v.r)}</td><td class="readonly-num">$ ${formatNum(v.p)}</td>`;
+            h += `</tr>`;
+        });
+        h += '</tbody></table>'; con.innerHTML = h; document.getElementById('historyModal').style.display = 'flex';
+    }
+    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
+    async function updateHistory(dk) { if(currentRole !== 'manager') return; cloudData.db[dk] = { r: Number(document.getElementById(`hist_r_${dk}`).value), p: Number(document.getElementById(`hist_p_${dk}`).value) }; showLoading(); await saveToCloud(); alert(`${dk} 已更新！`); hideLoading(); loadInputForDate(); }
+    async function deleteHistory(dk) { if(currentRole !== 'manager') return; if(confirm(`刪除 ${dk} 紀錄？`)) { delete cloudData.db[dk]; showLoading(); await saveToCloud(); hideLoading(); openHistoryModal(); loadInputForDate(); } }
+    async function saveDailyData() {
+        const ds = document.getElementById('currentDate').value;
+        const r = Number(document.getElementById('dailyRevInput').value); const p = Number(document.getElementById('dailyProfInput').value);
+        if(!ds) return; if (currentRole === 'employee' && ds !== getTodayString()) { alert("員工僅能存今日資料！"); return; }
+        cloudData.db[ds] = { r: r, p: p }; showLoading(); await saveToCloud(); hideLoading(); alert(`數據同步成功！`);
+    }
 
-    // --- 啟動 ---
+    // --- 啟動程序 ---
     document.getElementById('currentDate').addEventListener('change', loadInputForDate);
     document.getElementById('dailyRevInput').addEventListener('input', calculateDashboard);
     document.getElementById('dailyProfInput').addEventListener('input', calculateDashboard);
     
     window.onload = function() {
         document.getElementById('currentDate').value = getTodayString();
-        initRoleUI();
-        loadFromCloud();
+        document.getElementById('roleSelect').value = 'employee';
+        currentRole = 'employee';
+        loadFromCloud(); 
     };
 </script>
 </body>
