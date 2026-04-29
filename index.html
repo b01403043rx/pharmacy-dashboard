@@ -27,8 +27,6 @@
         #loginUsername, #loginPassword { text-align: left; }
         input[type="date"] { padding: 10px; border: 1px solid #90CAF9; border-radius: 6px; font-size: 16px; font-weight: bold; color: #1565C0; background-color: #FAFCFF; }
         input:focus { outline: none; border-color: #1565C0; background-color: #FFF; }
-        
-        /* 鎖定狀態樣式 */
         input:disabled { background-color: #ECEFF1; color: #78909C; cursor: not-allowed; border-color: #CFD8DC; }
         
         .btn-group-row { display: flex; gap: 10px; align-items: center; }
@@ -63,28 +61,33 @@
         .modal-content { background: #FFF; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .modal-content h3 { margin-top: 0; color: #0D47A1; border-bottom: 2px solid #E3F2FD; padding-bottom: 10px; }
         
-        /* 歷史篩選列 */
+        /* 歷史篩選與摺疊樣式 */
         .history-filter-bar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; background: #F5F9FF; padding: 12px; border-radius: 8px; border: 1px solid #BBDEFB; flex-wrap: wrap;}
         .history-filter-bar select { padding: 6px 10px; border-radius: 6px; border: 1px solid #90CAF9; color: #0D47A1; font-weight: bold; font-size: 14px; outline: none; background: #FFF;}
 
-        .history-table-container { max-height: 45vh; overflow-y: auto; border: 1px solid #BBDEFB; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.02); }
+        .history-table-container { max-height: 50vh; overflow-y: auto; }
+        
+        /* 🚀 月份摺疊列樣式 */
+        .month-accordion { margin-bottom: 8px; border-radius: 8px; overflow: hidden; border: 1px solid #90CAF9; }
+        .month-header { 
+            background: linear-gradient(90deg, #1565C0, #1976D2); color: white; padding: 10px 15px; 
+            font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            user-select: none;
+        }
+        .month-header:hover { background: #0D47A1; }
+        .month-content { display: none; background: #FFF; padding: 0; }
+        .month-content.active { display: block; }
+        .month-arrow { transition: transform 0.3s; font-size: 12px; }
+        .active .month-arrow { transform: rotate(180deg); }
+
         .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th, .history-table td { padding: 12px 15px; text-align: center; border-bottom: 1px solid #E3F2FD; }
-        .history-table th { background-color: #1565C0; color: #FFFFFF; font-weight: bold; position: sticky; top: 0; z-index: 2; }
+        .history-table th, .history-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid #E3F2FD; font-size: 14px; }
+        .history-table th { background-color: #E3F2FD; color: #0D47A1; font-weight: bold; position: sticky; top: 0; z-index: 1; }
         .history-table tbody tr:hover { background-color: #F5F9FF; }
-        .readonly-num { text-align: right; font-weight: bold; color: #0D47A1; font-size: 16px; padding-right: 15px; }
+        .readonly-num { text-align: right; font-weight: bold; color: #0D47A1; font-size: 15px; }
 
-        .settings-section { margin-bottom: 25px; background: #F5F9FF; padding: 15px; border-radius: 8px; border: 1px solid #E3F2FD; }
-        .settings-section h4 { margin: 0 0 15px 0; color: #1565C0; }
-        .tier-row { display: flex; align-items: center; margin-bottom: 10px; gap: 10px; }
-        .tier-row label { margin-bottom: 0; font-weight: bold; color: #546E7A; min-width: 60px;}
-        .tier-row input[type="number"] { padding: 6px; font-size: 14px; flex: 1; border: 1px solid #90CAF9; font-weight: bold; color: #1565C0; text-align: right;}
-
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-        .btn-cancel { background: #90CAF9; color: #0D47A1; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;}
-        .btn-cancel:hover { background: #BBDEFB; }
-        .btn-confirm { background: #1976D2; color: white; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s;}
-        .btn-confirm:hover { background: #115293; }
+        .btn-update { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px;}
+        .btn-delete { background-color: #D32F2F; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; margin-left: 3px;}
 
         #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { border: 6px solid #E3F2FD; border-top: 6px solid #1565C0; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 15px;}
@@ -95,7 +98,7 @@
 
 <div id="loadingOverlay">
     <div class="spinner"></div>
-    <p style="color:#1565C0; font-weight:bold; margin-top:10px;">雲端資料同步中...</p>
+    <p style="color:#1565C0; font-weight:bold; margin-top:10px;">雲端同步中...</p>
 </div>
 
 <div class="container">
@@ -232,6 +235,7 @@
 <div id="historyModal" class="modal-overlay">
     <div class="modal-content" style="max-width: 850px;">
         <h3>📅 歷史資料管理</h3>
+        
         <div class="history-filter-bar">
             <label style="font-weight:bold; color:#0D47A1;">篩選年份：</label>
             <select id="histYearSelect" onchange="openHistoryModal()"></select>
@@ -244,7 +248,10 @@
             </select>
             <p id="historySubtitle" style="margin:0 0 0 auto; font-size:13px; color:#546E7A;"></p>
         </div>
-        <div class="history-table-container" id="historyTableContainer"></div>
+
+        <div class="history-table-container" id="historyAccordionContainer">
+            </div>
+
         <div class="modal-actions"><button class="btn-cancel" onclick="closeHistoryModal()">關閉</button></div>
     </div>
 </div>
@@ -307,7 +314,7 @@
         } catch (e) { alert('雲端存檔失敗，請檢查網路。'); }
     }
 
-    // --- 權限與登入系統 ---
+    // --- 權限系統 ---
     function changeRole() {
         if (document.getElementById('roleSelect').value === 'manager') {
             document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = '';
@@ -326,21 +333,15 @@
     function handleLoginEnter(e) { if (e.key === 'Enter') verifyLogin(); }
 
     function applyRoleRestrictions() {
-        const settingsBtn = document.getElementById('btnSettings');
-        const dateInput = document.getElementById('currentDate');
-        
         if (currentRole === 'employee') {
-            settingsBtn.style.display = 'none';
-            // 🔥 更新：員工權限不再鎖死日期選擇器，讓其可查看其他天
-            dateInput.disabled = false; 
+            document.getElementById('btnSettings').style.display = 'none';
         } else {
-            settingsBtn.style.display = 'inline-block';
-            dateInput.disabled = false;
+            document.getElementById('btnSettings').style.display = 'inline-block';
         }
         loadInputForDate(); 
     }
 
-    // --- 下載與輸入連動邏輯 ---
+    // --- 下載與輸入連動 ---
     function loadInputForDate() {
         const dateStr = document.getElementById('currentDate').value;
         const revIn = document.getElementById('dailyRevInput');
@@ -348,38 +349,25 @@
         const saveBtn = document.getElementById('btnSave');
         const todayStr = getTodayString();
 
-        // 載入該日數據
         if(cloudData.db[dateStr]) {
-            revIn.value = cloudData.db[dateStr].r; 
-            profIn.value = cloudData.db[dateStr].p;
+            revIn.value = cloudData.db[dateStr].r; profIn.value = cloudData.db[dateStr].p;
         } else {
             revIn.value = ""; profIn.value = "";
         }
 
-        // 🔥 重點邏輯：判斷目前日期與權限，決定是否開放編輯
         if (currentRole === 'employee') {
             if (dateStr === todayStr) {
-                // 是今天：開放輸入，顯示儲存按鈕
-                revIn.disabled = false;
-                profIn.disabled = false;
-                saveBtn.style.display = 'inline-block';
+                revIn.disabled = false; profIn.disabled = false; saveBtn.style.display = 'inline-block';
             } else {
-                // 不是今天：鎖定輸入，隱藏儲存按鈕 (實現唯讀查看)
-                revIn.disabled = true;
-                profIn.disabled = true;
-                saveBtn.style.display = 'none';
+                revIn.disabled = true; profIn.disabled = true; saveBtn.style.display = 'none';
             }
         } else {
-            // 主管權限：隨時可以修改與儲存
-            revIn.disabled = false;
-            profIn.disabled = false;
-            saveBtn.style.display = 'inline-block';
+            revIn.disabled = false; profIn.disabled = false; saveBtn.style.display = 'inline-block';
         }
-
         calculateDashboard();
     }
 
-    // --- 核心計算 (省略細節保持效率) ---
+    // --- 核心計算 (全年度通用・滾動版) ---
     function calculateDashboard() {
         const selectedDateStr = document.getElementById('currentDate').value;
         if (!selectedDateStr) return;
@@ -388,17 +376,12 @@
         if(!cloudData.configs[y]) cloudData.configs[y] = {};
         if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
         const c = cloudData.configs[y][q];
-        const targetRev = c.revTiers[c.activeRevIdx];
-        const targetProf = c.profTiers[c.activeProfIdx];
-        const qMonths = getQuarterMonths(q);
-        const mIdx = qMonths.indexOf(m);
-        document.getElementById('mRevTargetName').innerText = tierNames[c.activeRevIdx];
-        document.getElementById('mProfTargetName').innerText = tierNames[c.activeProfIdx];
-        document.getElementById('qTargetRevDisp').innerText = formatNum(targetRev);
-        document.getElementById('qTargetProfDisp').innerText = formatNum(targetProf);
-        const drIn = Number(document.getElementById('dailyRevInput').value) || 0;
-        const dpIn = Number(document.getElementById('dailyProfInput').value) || 0;
-        let mRAct = 0, mPAct = 0, qRAct = 0, qPAct = 0, mRBef = 0, mPBef = 0, pMRev = 0, pMProf = 0;
+        const targetRev = c.revTiers[c.activeRevIdx]; const targetProf = c.profTiers[c.activeProfIdx];
+        const qMonths = getQuarterMonths(q); const mIdx = qMonths.indexOf(m);
+        document.getElementById('mRevTargetName').innerText = tierNames[c.activeRevIdx]; document.getElementById('mProfTargetName').innerText = tierNames[c.activeProfIdx];
+        document.getElementById('qTargetRevDisp').innerText = formatNum(targetRev); document.getElementById('qTargetProfDisp').innerText = formatNum(targetProf);
+        const drIn = Number(document.getElementById('dailyRevInput').value) || 0; const dpIn = Number(document.getElementById('dailyProfInput').value) || 0;
+        let qRAct = 0, qPAct = 0, mRBef = 0, mPBef = 0, pMRev = 0, pMProf = 0;
         for (const [dk, val] of Object.entries(cloudData.db)) {
             const ed = new Date(dk);
             if (ed.getFullYear() === y && getQuarter(ed) === q) {
@@ -409,21 +392,19 @@
                 }
             }
         }
-        mRAct = mRBef + drIn; mPAct = mPBef + dpIn; qRAct += drIn; qPAct += dpIn;
+        let mRTotal = mRBef + drIn; let mPTotal = mPBef + dpIn; qRAct += drIn; qPAct += dpIn;
         let remW = 0; for(let i = mIdx; i < 3; i++) remW += c.weights[i];
         let wR = remW > 0 ? (c.weights[mIdx] / remW) : 1;
         const mTR = Math.max(0, (targetRev - pMRev) * wR); const mTP = Math.max(0, (targetProf - pMProf) * wR);
-        const mDs = getMonthDays(y, m);
-        const daysLI = mDs - day + 1;
-        const mRTR = Math.max(0, (mTR - mRBef) / daysLI); const mRTP = Math.max(0, (mTP - mPBef) / daysLI);
-        const mRR = mRTR === 0 ? (drIn > 0 ? 100 : 0) : (drIn / mRTR) * 100;
-        const mRP = mRTP === 0 ? (dpIn > 0 ? 100 : 0) : (dpIn / mRTP) * 100;
+        const mDs = getMonthDays(y, m); const dLI = mDs - day + 1;
+        const mRTR = Math.max(0, (mTR - mRBef) / dLI); const mRTP = Math.max(0, (mTP - mPBef) / dLI);
+        const mRR = mRTR === 0 ? (drIn > 0 ? 100 : 0) : (drIn / mRTR) * 100; const mRP = mRTP === 0 ? (dpIn > 0 ? 100 : 0) : (dpIn / mRTP) * 100;
         const dLA = mDs - day;
-        document.getElementById('mSumRev').innerText = formatNum(mRAct); document.getElementById('mSumProf').innerText = formatNum(mPAct);
+        document.getElementById('mSumRev').innerText = formatNum(mRTotal); document.getElementById('mSumProf').innerText = formatNum(mPTotal);
         document.getElementById('mTargetRev').innerText = formatNum(mTR); document.getElementById('mTargetProf').innerText = formatNum(mTP);
         document.getElementById('mExpRev').innerText = formatNum(mTR * (day/mDs)); document.getElementById('mExpProf').innerText = formatNum(mTP * (day/mDs));
-        document.getElementById('mReqDailyRev').innerText = formatNum(dLA<=0?0:(mTR-mRAct)/dLA)+" /天"; document.getElementById('mReqDailyProf').innerText = formatNum(dLA<=0?0:(mTP-mPAct)/dLA)+" /天";
-        document.getElementById('mDistRev').innerText = formatNum(Math.max(0,mTR-mRAct)); document.getElementById('mDistProf').innerText = formatNum(Math.max(0,mTP-mPAct));
+        document.getElementById('mReqDailyRev').innerText = formatNum(dLA<=0?0:(mTR-mRTotal)/dLA)+" /天"; document.getElementById('mReqDailyProf').innerText = formatNum(dLA<=0?0:(mTP-mPTotal)/dLA)+" /天";
+        document.getElementById('mDistRev').innerText = formatNum(Math.max(0,mTR-mRTotal)); document.getElementById('mDistProf').innerText = formatNum(Math.max(0,mTP-mPTotal));
         document.getElementById('mReqTodayRevDisp').innerText = formatNum(mRTR); document.getElementById('mReqTodayProfDisp').innerText = formatNum(mRTP);
         updateBar('mBarRev', 'mRateTextRev', 'mDistBoxRev', mRR, false, 'mMotRev', day);
         updateBar('mBarProf', 'mRateTextProf', 'mDistBoxProf', mRP, false, 'mMotProf', day);
@@ -444,12 +425,11 @@
             const me = document.getElementById(mid);
             const sm = ["🎉 太棒了！今日動態目標順利拿下！", "🔥 火力全開！請繼續保持這個氣勢！", "✨ 完美達標！今天的努力沒有白費！", "🚀 業績達陣！門市團隊超讚的表現！"];
             const cm = ["💪 還差一點點！穩住陣腳，明天繼續衝刺！", "🏃‍♂️ 加把勁！調整腳步我們明天把它贏回來！", "🌟 別氣餒！把今天的不足化為明天的動力！", "🎯 目標就在前方，繼續加油千萬不要放棄！"];
-            let idx = (doy ? doy : 1) % 4;
-            me.innerText = r >= 100 ? sm[idx] : cm[idx]; me.style.color = r >= 100 ? '#C62828' : '#1565C0';
+            let idx = (doy ? doy : 1) % 4; me.innerText = r >= 100 ? sm[idx] : cm[idx]; me.style.color = r >= 100 ? '#C62828' : '#1565C0';
         }
     }
 
-    // --- 設定管理與歷史管理 (其餘邏輯不變) ---
+    // --- 設定管理 ---
     function openSettingsModal() {
         if(currentRole !== 'manager') return;
         const d = new Date(document.getElementById('currentDate').value);
@@ -476,32 +456,106 @@
         c.activeProfIdx = Number(document.querySelector('input[name="activeProf"]:checked').value);
         c.weights = w; closeSettingsModal(); showLoading(); await saveToCloud(); alert("設定同步成功！"); hideLoading();
     }
+
+    // --- 🚀 歷史紀錄 (優化摺疊功能) ---
     function openHistoryModal() {
-        const con = document.getElementById('historyTableContainer'); const sub = document.getElementById('historySubtitle');
-        const ys = document.getElementById('histYearSelect'); const qs = document.getElementById('histQuarterSelect');
-        if (ys.innerHTML === "") {
-            const cy = new Date().getFullYear(); for(let i = cy+1; i >= 2024; i--) ys.add(new Option(i + " 年", i));
-            ys.value = new Date(document.getElementById('currentDate').value).getFullYear();
-            qs.value = getQuarter(new Date(document.getElementById('currentDate').value));
+        const container = document.getElementById('historyAccordionContainer');
+        const subtitle = document.getElementById('historySubtitle');
+        const yearSelect = document.getElementById('histYearSelect');
+        const qSelect = document.getElementById('histQuarterSelect');
+
+        if (yearSelect.innerHTML === "") {
+            const currentYear = new Date().getFullYear();
+            for(let i = currentYear + 1; i >= 2024; i--) yearSelect.add(new Option(i + " 年", i));
+            yearSelect.value = new Date(document.getElementById('currentDate').value).getFullYear();
+            qSelect.value = getQuarter(new Date(document.getElementById('currentDate').value));
         }
-        sub.innerText = currentRole === 'manager' ? "主管權限：修改後按更新。" : "唯讀模式：僅主管可修改。";
-        const ty = ys.value; const tq = qs.value; const tm = getQuarterMonths(tq);
-        const fds = Object.keys(cloudData.db).filter(dk => { const d = new Date(dk); return d.getFullYear().toString() === ty && tm.includes(d.getMonth() + 1); }).sort((a, b) => new Date(b) - new Date(a));
-        let h = '<table class="history-table"><thead><tr><th>日期</th><th>營業額</th><th>毛利</th>';
-        if (currentRole === 'manager') h += '<th>操作</th>';
-        h += '</tr></thead><tbody>';
-        if(fds.length === 0) h += `<tr><td colspan="${currentRole==='manager'?4:3}" style="color:#777; padding:30px;">所選季度尚無紀錄。</td></tr>`;
-        else fds.forEach(dk => {
-            const v = cloudData.db[dk]; h += `<tr><td style="font-weight:bold; color:#1565C0;">${dk}</td>`;
-            if (currentRole === 'manager') h += `<td><input type="number" id="hist_r_${dk}" value="${v.r}"></td><td><input type="number" id="hist_p_${dk}" value="${v.p}"></td><td><button class="btn-update" onclick="updateHistory('${dk}')">更新</button><button class="btn-delete" onclick="deleteHistory('${dk}')">刪除</button></td>`;
-            else h += `<td class="readonly-num">$ ${formatNum(v.r)}</td><td class="readonly-num">$ ${formatNum(v.p)}</td>`;
-            h += `</tr>`;
+
+        subtitle.innerText = currentRole === 'manager' ? "主管權限：修改後按更新。" : "唯讀模式：僅主管可修改。";
+
+        const targetY = yearSelect.value;
+        const targetQ = qSelect.value;
+        const targetMonths = getQuarterMonths(targetQ); // 例如 [4, 5, 6]
+
+        let html = "";
+        
+        // 針對該季的三個月分別建立摺疊區塊
+        targetMonths.forEach((month, index) => {
+            const monthName = month + "月";
+            const filteredDates = Object.keys(cloudData.db).filter(dateStr => {
+                const d = new Date(dateStr);
+                return d.getFullYear().toString() === targetY && (d.getMonth() + 1) === month;
+            }).sort((a, b) => new Date(b) - new Date(a));
+
+            // 預設展開最新的月份 (若是本季，展開最後一個月或當前月份)
+            const isActive = (index === targetMonths.length - 1) ? "active" : "";
+
+            html += `
+                <div class="month-accordion">
+                    <div class="month-header" onclick="toggleAccordion(this)">
+                        <span>📅 ${monthName} 紀錄 (${filteredDates.length} 筆)</span>
+                        <span class="month-arrow">▼</span>
+                    </div>
+                    <div class="month-content ${isActive}">
+                        <table class="history-table">
+                            <thead>
+                                <tr><th style="width:20%">日期</th><th style="width:30%">營業額</th><th style="width:30%">毛利</th>
+                                ${currentRole === 'manager' ? '<th style="width:20%">操作</th>' : ''}</tr>
+                            </thead>
+                            <tbody>
+                                ${filteredDates.length === 0 ? `<tr><td colspan="4" style="color:#999; padding:20px;">本月尚無紀錄</td></tr>` : 
+                                    filteredDates.map(date => {
+                                        const v = cloudData.db[date];
+                                        return `
+                                            <tr>
+                                                <td style="font-weight:bold; color:#1565C0;">${date}</td>
+                                                ${currentRole === 'manager' ? 
+                                                    `<td><input type="number" id="hist_r_${date}" value="${v.r}"></td>
+                                                     <td><input type="number" id="hist_p_${date}" value="${v.p}"></td>
+                                                     <td><button class="btn-update" onclick="updateHistory('${date}')">更新</button>
+                                                         <button class="btn-delete" onclick="deleteHistory('${date}')">刪」</button></td>` :
+                                                    `<td class="readonly-num">$ ${formatNum(v.r)}</td>
+                                                     <td class="readonly-num">$ ${formatNum(v.p)}</td>`
+                                                }
+                                            </tr>
+                                        `;
+                                    }).join('')
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
         });
-        h += '</tbody></table>'; con.innerHTML = h; document.getElementById('historyModal').style.display = 'flex';
+
+        container.innerHTML = html;
+        document.getElementById('historyModal').style.display = 'flex';
     }
+
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const arrow = header.querySelector('.month-arrow');
+        
+        // 切換 active 類別
+        const isOpen = content.classList.contains('active');
+        
+        // 摺疊其他同層級月份 (可選，若想一次只開一個就加上)
+        // const allContents = document.querySelectorAll('.month-content');
+        // allContents.forEach(c => c.classList.remove('active'));
+
+        if (isOpen) {
+            content.classList.remove('active');
+            header.parentElement.classList.remove('active');
+        } else {
+            content.classList.add('active');
+            header.parentElement.classList.add('active');
+        }
+    }
+
     function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
     async function updateHistory(dk) { if(currentRole !== 'manager') return; cloudData.db[dk] = { r: Number(document.getElementById(`hist_r_${dk}`).value), p: Number(document.getElementById(`hist_p_${dk}`).value) }; showLoading(); await saveToCloud(); alert(`${dk} 已更新！`); hideLoading(); loadInputForDate(); }
     async function deleteHistory(dk) { if(currentRole !== 'manager') return; if(confirm(`刪除 ${dk} 紀錄？`)) { delete cloudData.db[dk]; showLoading(); await saveToCloud(); hideLoading(); openHistoryModal(); loadInputForDate(); } }
+    
     async function saveDailyData() {
         const ds = document.getElementById('currentDate').value;
         const r = Number(document.getElementById('dailyRevInput').value); const p = Number(document.getElementById('dailyProfInput').value);
