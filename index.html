@@ -3,158 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>門市營運目標看板 (全年度通用雲端版)</title>
+    <title>門市營運目標看板 (經典風格修復版)</title>
     <style>
-        /* === 現代化藍白配色主題 === */
-        :root {
-            --primary-blue: #1565C0;
-            --secondary-blue: #1976D2;
-            --bg-ice-blue: #F0F8FF;
-            --bg-card-blue: #E3F2FD;
-            --text-dark-blue: #0D47A1;
-            --accent-green: #A5D6A7;
-            --accent-pink: #FFCDD2;
-            --danger-red: #D32F2F;
-        }
-
-        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background-color: var(--bg-ice-blue); color: #333; margin: 0; padding: 20px; }
+        /* === 回歸經典藍白配色 === */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F0F8FF; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(13, 71, 161, 0.08); position: relative; }
         
-        .container { 
-            max-width: 1200px; margin: 0 auto; background: #FFFFFF; padding: 30px; 
-            border-radius: 16px; box-shadow: 0 10px 30px rgba(13, 71, 161, 0.1); position: relative; 
-        }
-
-        .header-area { 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 2px solid #E3F2FD; padding-bottom: 20px; margin-bottom: 30px; 
-            flex-wrap: wrap; gap: 15px;
-        }
-        h1 { color: var(--text-dark-blue); margin: 0; font-weight: 800; font-size: 28px; }
+        .header-area { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E3F2FD; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
+        h1 { color: #0D47A1; margin: 0; font-weight: 800; }
         
-        /* 權限選單優化 */
-        .role-selector { 
-            display: flex; align-items: center; gap: 10px; 
-            background: var(--bg-card-blue); padding: 8px 16px; border-radius: 50px; border: 1px solid #90CAF9;
-        }
-        .role-selector select { 
-            border: none; background: transparent; font-size: 15px; font-weight: bold; 
-            color: var(--text-dark-blue); cursor: pointer; outline: none;
-        }
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+        .role-selector { display: flex; align-items: center; gap: 8px; background: #E3F2FD; padding: 6px 12px; border-radius: 8px; border: 1px solid #90CAF9; }
+        .role-selector select { border: none; background: transparent; font-size: 15px; font-weight: bold; color: #0D47A1; outline: none; cursor: pointer; }
 
-        /* 按鈕美化 */
-        .btn-base {
-            padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;
-            transition: all 0.3s ease; border: none; font-size: 15px; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .settings-btn { background-color: var(--primary-blue); color: white; }
-        .settings-btn:hover { background-color: var(--text-dark-blue); transform: translateY(-2px); }
+        .settings-btn { background-color: #1565C0; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; transition: background 0.3s; }
+        .settings-btn:hover { background-color: #0D47A1; }
         
-        .save-btn { background-color: #2E7D32; color: white; }
-        .save-btn:hover { background-color: #1B5E20; transform: translateY(-2px); }
-        
-        .history-btn { background-color: #0288D1; color: white; }
-        .history-btn:hover { background-color: #01579B; transform: translateY(-2px); }
-
         /* 每日輸入區 */
-        .daily-input-section { 
-            display: flex; align-items: flex-end; gap: 20px; margin-bottom: 30px; 
-            background: var(--bg-card-blue); padding: 25px; border-radius: 12px; border: 1px solid #BBDEFB; flex-wrap: wrap;
-        }
-        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
-        .input-group label { font-weight: bold; margin-bottom: 8px; color: var(--text-dark-blue); font-size: 14px; }
+        .daily-input-section { display: flex; align-items: flex-end; gap: 15px; margin-bottom: 30px; background: #E3F2FD; padding: 20px; border-radius: 10px; border: 1px solid #BBDEFB; flex-wrap: wrap; }
+        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 150px; }
+        label { font-weight: bold; margin-bottom: 8px; color: #0D47A1; font-size: 14px; }
         
         input[type="number"], input[type="date"], input[type="text"], input[type="password"] { 
-            padding: 12px; border: 1px solid #90CAF9; border-radius: 8px; font-size: 16px; 
-            font-weight: bold; color: var(--primary-blue); background-color: #FAFCFF; transition: all 0.3s;
+            padding: 10px; border: 1px solid #90CAF9; border-radius: 6px; font-size: 16px; font-weight: bold; color: #1565C0; 
+            background-color: #FAFCFF; text-align: right; 
         }
-        input[type="number"] { text-align: right; }
-        input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2); outline: none; background-color: #FFF; }
-        input:disabled { background-color: #ECEFF1; color: #90A4AE; cursor: not-allowed; }
+        input:focus { outline: none; border-color: #1565C0; background-color: #FFF; }
+        input:disabled { background-color: #ECEFF1; color: #78909C; cursor: not-allowed; }
+        
+        .btn-group-row { display: flex; gap: 10px; align-items: center; }
+        .save-btn { padding: 10px 20px; background-color: #1976D2; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; height: 42px; }
+        .history-btn { padding: 10px 20px; background-color: #0288D1; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; height: 42px; }
 
-        /* 儀表板卡片 */
+        /* 儀表板佈局 */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
-        .column-header { 
-            text-align: center; background: var(--primary-blue); color: white; padding: 14px; 
-            border-radius: 10px; margin-bottom: 20px; font-size: 18px; font-weight: bold; 
-            box-shadow: 0 4px 10px rgba(21, 101, 192, 0.2);
-        }
+        .column-header { text-align: center; background: #1565C0; color: white; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 18px; font-weight: bold; box-shadow: 0 2px 8px rgba(21, 101, 192, 0.2); }
 
-        .card { 
-            border: 1px solid #90CAF9; border-radius: 12px; padding: 25px; margin-bottom: 20px; 
-            background-color: var(--bg-card-blue); box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-        }
-        .card h2 { 
-            margin-top: 0; color: var(--text-dark-blue); font-size: 19px; border-bottom: 2px solid #BBDEFB; 
-            padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; 
-        }
-        .actual-sum { font-size: 14px; background: #FFFFFF; padding: 5px 12px; border-radius: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
-
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: #FFFFFF; padding: 15px; border-radius: 10px; border: 1px solid #E3F2FD; }
-        .stat-title { font-size: 13px; color: #546E7A; margin-bottom: 6px; font-weight: bold; }
-        .stat-value { font-size: 20px; font-weight: bold; color: var(--text-dark-blue); text-align: right; }
+        .card { border: 1px solid #90CAF9; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); background-color: #E3F2FD; }
+        .card h2 { margin-top: 0; color: #0D47A1; font-size: 18px; border-bottom: 2px solid #BBDEFB; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; }
+        .actual-sum { font-size: 14px; color: #1565C0; font-weight: bold; background: #FFFFFF; padding: 4px 10px; border-radius: 20px;}
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .stat-box { background: #FFFFFF; padding: 15px; border-radius: 8px; border: 1px solid #E3F2FD; box-shadow: 0 2px 5px rgba(21, 101, 192, 0.05); }
+        .color-dynamic-box { transition: background-color 0.4s ease; }
+        .stat-title { font-size: 13px; color: #546E7A; margin-bottom: 5px; font-weight: bold;}
+        .stat-value { font-size: 18px; font-weight: bold; color: #0D47A1; text-align: right; }
         
         /* 進度條 */
-        .progress-container { width: 100%; background-color: #FFFFFF; border-radius: 10px; overflow: hidden; height: 26px; border: 1px solid #BBDEFB; margin-top: 10px; }
-        .progress-bar { 
-            height: 100%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
-            display: flex; align-items: center; justify-content: flex-end; 
-            padding-right: 10px; font-size: 12px; font-weight: bold; color: white; background-color: var(--primary-blue);
-        }
+        .progress-container { width: 100%; background-color: #FFFFFF; border-radius: 8px; overflow: hidden; height: 24px; position: relative; margin-bottom: 5px; border: 1px solid #BBDEFB; }
+        .progress-bar { height: 100%; transition: width 0.4s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: bold; box-sizing: border-box; background-color: #1565C0; color: #FFFFFF; }
+        .rate-text { font-weight: bold; font-size: 14px; color: #1565C0; }
+        .motivation-text { font-size: 13px; font-weight: bold; margin-top: 5px; text-align: right; min-height: 18px; letter-spacing: 0.5px; }
 
-        /* 歷史資料 - 月份摺疊優化 */
-        .month-accordion { margin-bottom: 15px; border-radius: 10px; overflow: hidden; border: 1px solid #90CAF9; background: white;}
+        /* 歷史紀錄與篩選器 */
+        .history-filter-bar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; background: #F5F9FF; padding: 12px; border-radius: 8px; border: 1px solid #BBDEFB; flex-wrap: wrap;}
+        .history-filter-bar select { padding: 6px 10px; border-radius: 6px; border: 1px solid #90CAF9; color: #0D47A1; font-weight: bold; font-size: 14px; outline: none; background: #FFF;}
+        
+        .month-accordion { margin-bottom: 8px; border-radius: 8px; overflow: hidden; border: 1px solid #90CAF9; }
         .month-header { 
-            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)); color: white; 
-            padding: 12px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(90deg, #1565C0, #1976D2); color: white; padding: 10px 15px; 
+            font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
         }
-        .month-header:hover { filter: brightness(1.1); }
-        .month-actions { display: flex; align-items: center; gap: 15px; }
-        .btn-delete-month { 
-            background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255,255,255,0.5);
-            padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; transition: 0.3s;
-        }
-        .btn-delete-month:hover { background-color: var(--danger-red); border-color: transparent; }
+        .btn-delete-month { background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid white; padding: 2px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-right: 10px; }
+        .btn-delete-month:hover { background-color: #D32F2F; }
 
-        .month-content { display: none; padding: 0; }
+        .month-content { display: none; background: #FFF; padding: 0; }
         .month-content.active { display: block; }
         
         .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th { background-color: #E3F2FD; color: var(--text-dark-blue); padding: 12px; text-align: center; }
-        .history-table td { padding: 12px; text-align: center; border-bottom: 1px solid #F0F4F8; }
+        .history-table th, .history-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid #E3F2FD; }
+        .readonly-num { text-align: right; font-weight: bold; color: #0D47A1; font-size: 15px; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 71, 161, 0.4); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #FFF; padding: 30px; border-radius: 12px; width: 90%; max-width: 850px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         
-        /* 彈窗樣式 */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,20,50,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
-        .modal-content { background: #FFF; padding: 35px; border-radius: 16px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        
-        #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
+        #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { border: 6px solid #E3F2FD; border-top: 6px solid #1565C0; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div id="loadingOverlay"><div class="spinner"></div><p style="color:var(--primary-blue); font-weight:bold; margin-top:15px;">雲端資料同步中...</p></div>
+<div id="loadingOverlay"><div class="spinner"></div><p style="color:#1565C0; font-weight:bold; margin-top:10px;">雲端同步中...</p></div>
 
 <div class="container">
     <div class="header-area">
-        <h1>營運目標追蹤看板</h1>
+        <h1>門市營運追蹤看板</h1>
         <div class="header-controls">
             <div class="role-selector">
-                <label>登入身分</label>
+                <label>身分：</label>
                 <select id="roleSelect" onchange="changeRole()">
                     <option value="employee">👤 一般員工</option>
                     <option value="manager">👑 門市主管</option>
                 </select>
             </div>
-            <button class="btn-base settings-btn" id="btnSettings" onclick="openSettingsModal()" style="display:none;">⚙️ 參數設定</button>
+            <button class="settings-btn" id="btnSettings" onclick="openSettingsModal()" style="display:none;">⚙️ 目標設定</button>
         </div>
     </div>
     
     <div class="daily-input-section">
         <div class="input-group">
-            <label>選擇結算日期</label>
+            <label>日期</label>
             <input type="date" id="currentDate">
         </div>
         <div class="input-group">
@@ -166,22 +117,22 @@
             <input type="number" id="dailyProfInput" placeholder="0">
         </div>
         <div class="btn-group-row">
-            <button class="btn-base save-btn" id="btnSave" onclick="saveDailyData()">💾 儲存數據</button>
-            <button class="btn-base history-btn" onclick="openHistoryModal()">📅 歷史管理</button>
+            <button class="save-btn" id="btnSave" onclick="saveDailyData()">💾 儲存數據</button>
+            <button class="history-btn" onclick="openHistoryModal()">📅 歷史資料</button>
         </div>
     </div>
 
     <div class="dashboard-grid">
         <div>
-            <div class="column-header">當月滾動追蹤</div>
+            <div class="column-header">【當月】滾動進度追蹤</div>
             <div class="card" id="card-mRev">
                 <h2>營業額 (<span id="mRevTargetName">目標</span>) <span class="actual-sum">累計: <span id="mSumRev">0</span></span></h2>
                 <div class="stats-grid">
-                    <div class="stat-box"><div class="stat-title">當前動態目標</div><div class="stat-value" id="mTargetRev">0</div></div>
+                    <div class="stat-box"><div class="stat-title">當月動態目標</div><div class="stat-value" id="mTargetRev">0</div></div>
                     <div class="stat-box"><div class="stat-title">明日起每日需達</div><div class="stat-value" id="mReqDailyRev">0</div></div>
-                    <div class="stat-box color-dynamic-box" id="mDistBoxRev" style="grid-column: span 2;"><div class="stat-title">🚩 距離動態目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="mDistRev">0</div></div>
+                    <div class="stat-box color-dynamic-box" id="mDistBoxRev" style="grid-column: span 2;"><div class="stat-title">🚩 距離動態目標還差</div><div class="stat-value" id="mDistRev" style="color:#D32F2F">0</div></div>
                 </div>
-                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">今日達成率 (目標: <span id="mReqTodayRevDisp">0</span>) <span class="rate-text" id="mRateTextRev">0%</span></div>
+                <div class="stat-title">今日達成率 (應達: <span id="mReqTodayRevDisp">0</span>) <span class="rate-text" id="mRateTextRev">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="mBarRev" style="width: 0%;">0%</div></div>
                 <div class="motivation-text" id="mMotRev"></div>
             </div>
@@ -189,26 +140,26 @@
             <div class="card" id="card-mProf">
                 <h2>毛利 (<span id="mProfTargetName">目標</span>) <span class="actual-sum">累計: <span id="mSumProf">0</span></span></h2>
                 <div class="stats-grid">
-                    <div class="stat-box"><div class="stat-title">當前動態目標</div><div class="stat-value" id="mTargetProf">0</div></div>
+                    <div class="stat-box"><div class="stat-title">當月動態目標</div><div class="stat-value" id="mTargetProf">0</div></div>
                     <div class="stat-box"><div class="stat-title">明日起每日需達</div><div class="stat-value" id="mReqDailyProf">0</div></div>
-                    <div class="stat-box color-dynamic-box" id="mDistBoxProf" style="grid-column: span 2;"><div class="stat-title">🚩 距離動態目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="mDistProf">0</div></div>
+                    <div class="stat-box color-dynamic-box" id="mDistBoxProf" style="grid-column: span 2;"><div class="stat-title">🚩 距離動態目標還差</div><div class="stat-value" id="mDistProf" style="color:#D32F2F">0</div></div>
                 </div>
-                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">今日達成率 (目標: <span id="mReqTodayProfDisp">0</span>) <span class="rate-text" id="mRateTextProf">0%</span></div>
+                <div class="stat-title">今日達成率 (應達: <span id="mReqTodayProfDisp">0</span>) <span class="rate-text" id="mRateTextProf">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="mBarProf" style="width: 0%;">0%</div></div>
                 <div class="motivation-text" id="mMotProf"></div>
             </div>
         </div>
 
         <div>
-            <div class="column-header">全季目標追蹤</div>
+            <div class="column-header">【全季】目標追蹤</div>
             <div class="card">
                 <h2>全季營業額 <span class="actual-sum">已累計: <span id="qSumRev">0</span></span></h2>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-title">截至今日應達</div><div class="stat-value" id="qExpRev">0</div></div>
-                    <div class="stat-box"><div class="stat-title">全季最終設定目標</div><div class="stat-value" id="qTargetRevDisp">0</div></div>
-                    <div class="stat-box" style="grid-column: span 2; background-color: #fff;"><div class="stat-title">🎯 距離全季目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="qDistRev">0</div></div>
+                    <div class="stat-box"><div class="stat-title">季度設定總目標</div><div class="stat-value" id="qTargetRevDisp">0</div></div>
+                    <div class="stat-box" style="grid-column: span 2; background-color: #fff;"><div class="stat-title">🎯 距離季度目標還差</div><div class="stat-value" id="qDistRev" style="color:#D32F2F">0</div></div>
                 </div>
-                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">全季總進度 <span class="rate-text" id="qRateTextRev">0%</span></div>
+                <div class="stat-title">全季總進度 <span class="rate-text" id="qRateTextRev">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="qBarRev" style="width: 0%;">0%</div></div>
             </div>
 
@@ -216,20 +167,63 @@
                 <h2>全季毛利 <span class="actual-sum">已累計: <span id="qSumProf">0</span></span></h2>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-title">截至今日應達</div><div class="stat-value" id="qExpProf">0</div></div>
-                    <div class="stat-box"><div class="stat-title">全季最終設定目標</div><div class="stat-value" id="qTargetProfDisp">0</div></div>
-                    <div class="stat-box" style="grid-column: span 2; background-color: #fff;"><div class="stat-title">🎯 距離全季目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="qDistProf">0</div></div>
+                    <div class="stat-box"><div class="stat-title">季度設定總目標</div><div class="stat-value" id="qTargetProfDisp">0</div></div>
+                    <div class="stat-box" style="grid-column: span 2; background-color: #fff;"><div class="stat-title">🎯 距離季度目標還差</div><div class="stat-value" id="qDistProf" style="color:#D32F2F">0</div></div>
                 </div>
-                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">全季總進度 <span class="rate-text" id="qRateTextProf">0%</span></div>
+                <div class="stat-title">全季總進度 <span class="rate-text" id="qRateTextProf">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="qBarProf" style="width: 0%;">0%</div></div>
             </div>
         </div>
     </div>
 </div>
 
+<div id="loginModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 400px;">
+        <h3 style="color:#D32F2F;">🔒 主管身分驗證</h3>
+        <div class="input-group" style="margin-bottom:15px;"><label>帳號</label><input type="text" id="loginUsername" onkeypress="handleLoginEnter(event)"></div>
+        <div class="input-group"><label>密碼</label><input type="password" id="loginPassword" onkeypress="handleLoginEnter(event)"></div>
+        <div id="loginError" style="color:#D32F2F; display:none; margin-top:10px; font-weight:bold;">❌ 帳號或密碼錯誤</div>
+        <div class="modal-actions" style="margin-top:20px;"><button class="save-btn" style="background:#999;" onclick="cancelLogin()">取消</button><button class="save-btn" onclick="verifyLogin()">登入</button></div>
+    </div>
+</div>
+
+<div id="settingsModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px;">
+        <h3 id="settingsTitle">⚙️ 目標參數設定</h3>
+        <div class="card" style="background: #F5F9FF;">
+            <h4>營業額門檻 (請勾選當前目標)</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><input type="radio" name="activeRev" value="0"> 檻一: <input type="number" id="cfgRev1" style="width:80px"></div>
+                <div><input type="radio" name="activeRev" value="1"> 檻二: <input type="number" id="cfgRev2" style="width:80px"></div>
+                <div><input type="radio" name="activeRev" value="2"> 檻三: <input type="number" id="cfgRev3" style="width:80px"></div>
+                <div><input type="radio" name="activeRev" value="3"> 檻四: <input type="number" id="cfgRev4" style="width:80px"></div>
+            </div>
+        </div>
+        <div class="card" style="background: #F5F9FF;">
+            <h4>毛利門檻</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><input type="radio" name="activeProf" value="0"> 檻一: <input type="number" id="cfgProf1" style="width:80px"></div>
+                <div><input type="radio" name="activeProf" value="1"> 檻二: <input type="number" id="cfgProf2" style="width:80px"></div>
+                <div><input type="radio" name="activeProf" value="2"> 檻三: <input type="number" id="cfgProf3" style="width:80px"></div>
+                <div><input type="radio" name="activeProf" value="3"> 檻四: <input type="number" id="cfgProf4" style="width:80px"></div>
+            </div>
+        </div>
+        <div class="card" style="background: #F5F9FF;">
+            <h4>月份權重 (%)</h4>
+            <div style="display:flex; gap:10px;">
+                <div>月1: <input type="number" id="cfgW1" style="width:60px"> %</div>
+                <div>月2: <input type="number" id="cfgW2" style="width:60px"> %</div>
+                <div>月3: <input type="number" id="cfgW3" style="width:60px"> %</div>
+            </div>
+            <p id="weightWarning" style="color:red; font-size:12px;"></p>
+        </div>
+        <div class="modal-actions"><button class="save-btn" style="background:#999;" onclick="closeSettingsModal()">取消</button><button class="save-btn" onclick="saveSettings()">儲存上傳</button></div>
+    </div>
+</div>
+
 <div id="historyModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 900px;">
-        <h3 style="color:var(--text-dark-blue); margin-top:0;">📅 歷史營運資料管理</h3>
-        
+    <div class="modal-content">
+        <h3>📅 歷史營運資料管理</h3>
         <div class="history-filter-bar">
             <label>年份</label><select id="histYearSelect" onchange="openHistoryModal()"></select>
             <label>季度</label>
@@ -239,49 +233,8 @@
             </select>
             <span id="historySubtitle" style="margin-left:auto; font-size:13px;"></span>
         </div>
-
-        <div class="history-table-container" id="historyAccordionContainer"></div>
-        <div class="modal-actions" style="margin-top:20px;"><button class="btn-base settings-btn" style="background:#78909C" onclick="closeHistoryModal()">關閉視窗</button></div>
-    </div>
-</div>
-
-<div id="loginModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 400px;">
-        <h3 style="color:var(--danger-red);">🔒 主管身分驗證</h3>
-        <div class="input-group" style="margin-bottom:15px;"><label>管理帳號</label><input type="text" id="loginUsername" onkeypress="handleLoginEnter(event)"></div>
-        <div class="input-group" style="margin-bottom:15px;"><label>密碼</label><input type="password" id="loginPassword" onkeypress="handleLoginEnter(event)"></div>
-        <div id="loginError" style="color:var(--danger-red); display:none; margin-bottom:10px; font-weight:bold;">❌ 帳號或密碼錯誤</div>
-        <div class="modal-actions"><button class="btn-base" style="background:#90A4AE; color:white" onclick="cancelLogin()">取消</button><button class="btn-base save-btn" onclick="verifyLogin()">登入系統</button></div>
-    </div>
-</div>
-
-<div id="settingsModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 600px;">
-        <h3 id="settingsTitle">⚙️ 目標參數設定</h3>
-        <div class="settings-section">
-            <h4>營業額門檻 (Radio 選取當前目標)</h4>
-            <div class="tier-row"><input type="radio" name="activeRev" value="0"> 檻一 <input type="number" id="cfgRev1"></div>
-            <div class="tier-row"><input type="radio" name="activeRev" value="1"> 檻二 <input type="number" id="cfgRev2"></div>
-            <div class="tier-row"><input type="radio" name="activeRev" value="2"> 檻三 <input type="number" id="cfgRev3"></div>
-            <div class="tier-row"><input type="radio" name="activeRev" value="3"> 檻四 <input type="number" id="cfgRev4"></div>
-        </div>
-        <div class="settings-section">
-            <h4>毛利門檻</h4>
-            <div class="tier-row"><input type="radio" name="activeProf" value="0"> 檻一 <input type="number" id="cfgProf1"></div>
-            <div class="tier-row"><input type="radio" name="activeProf" value="1"> 檻二 <input type="number" id="cfgProf2"></div>
-            <div class="tier-row"><input type="radio" name="activeProf" value="2"> 檻三 <input type="number" id="cfgProf3"></div>
-            <div class="tier-row"><input type="radio" name="activeProf" value="3"> 檻四 <input type="number" id="cfgProf4"></div>
-        </div>
-        <div class="settings-section">
-            <h4>月份權重 (%)</h4>
-            <div style="display:flex; gap:10px;">
-                <div class="input-group"><label>月1</label><input type="number" id="cfgW1"></div>
-                <div class="input-group"><label>月2</label><input type="number" id="cfgW2"></div>
-                <div class="input-group"><label>月3</label><input type="number" id="cfgW3"></div>
-            </div>
-            <small id="weightWarning" style="color:var(--danger-red)"></small>
-        </div>
-        <div class="modal-actions"><button class="btn-base" style="background:#90A4AE; color:white" onclick="closeSettingsModal()">取消</button><button class="btn-base save-btn" onclick="saveSettings()">儲存並同步</button></div>
+        <div id="historyAccordionContainer"></div>
+        <div class="modal-actions" style="margin-top:20px;"><button class="history-btn" style="background:#666;" onclick="closeHistoryModal()">關閉</button></div>
     </div>
 </div>
 
@@ -304,7 +257,7 @@
     function getTodayString() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
     function getQuarter(date) { const m = date.getMonth() + 1; if (m <= 3) return 'Q1'; if (m <= 6) return 'Q2'; if (m <= 9) return 'Q3'; return 'Q4'; }
     function getQuarterMonths(q) { if (q === 'Q1') return [1, 2, 3]; if (q === 'Q2') return [4, 5, 6]; if (q === 'Q3') return [7, 8, 9]; return [10, 11, 12]; }
-    function getMonthDays(y, m) { return new Date(y, m, 0).getDate(); }
+    function getMonthDays(year, month) { return new Date(year, month, 0).getDate(); }
 
     // --- 雲端 ---
     async function loadFromCloud() {
@@ -319,13 +272,13 @@
     }
 
     async function saveToCloud() {
-        calculateDashboard(); // 先本地反應
+        calculateDashboard();
         try {
             await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                 method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
                 body: JSON.stringify(cloudData)
             });
-        } catch (e) { alert('同步失敗'); }
+        } catch (e) { alert('同步失敗，請檢查網路'); }
     }
 
     // --- 權限 ---
@@ -343,17 +296,14 @@
     function handleLoginEnter(e) { if (e.key === 'Enter') verifyLogin(); }
 
     function applyRoleRestrictions() {
-        const isMgr = currentRole === 'manager';
-        document.getElementById('btnSettings').style.display = isMgr ? 'flex' : 'none';
+        document.getElementById('btnSettings').style.display = (currentRole === 'manager') ? 'flex' : 'none';
         loadInputForDate();
     }
 
-    // --- 邏輯 ---
     function loadInputForDate() {
         const ds = document.getElementById('currentDate').value;
         const today = getTodayString();
-        const isToday = ds === today;
-        const isMgr = currentRole === 'manager';
+        const canEdit = (currentRole === 'manager' || ds === today);
 
         if (cloudData.db[ds]) {
             document.getElementById('dailyRevInput').value = cloudData.db[ds].r;
@@ -363,115 +313,31 @@
             document.getElementById('dailyProfInput').value = "";
         }
 
-        const canEdit = isMgr || isToday;
         document.getElementById('dailyRevInput').disabled = !canEdit;
         document.getElementById('dailyProfInput').disabled = !canEdit;
         document.getElementById('btnSave').style.display = canEdit ? 'flex' : 'none';
-        
         calculateDashboard();
     }
 
     async function saveDailyData() {
         const ds = document.getElementById('currentDate').value;
-        cloudData.db[ds] = {
-            r: Number(document.getElementById('dailyRevInput').value),
-            p: Number(document.getElementById('dailyProfInput').value)
-        };
+        cloudData.db[ds] = { r: Number(document.getElementById('dailyRevInput').value), p: Number(document.getElementById('dailyProfInput').value) };
         await saveToCloud();
-        alert('儲存成功');
+        alert('儲存完成');
     }
 
-    // --- 歷史管理與整月刪除 ---
-    function openHistoryModal() {
-        const container = document.getElementById('historyAccordionContainer');
-        const ys = document.getElementById('histYearSelect');
-        const qs = document.getElementById('histQuarterSelect');
-
-        if (ys.innerHTML === "") {
-            const cy = new Date().getFullYear();
-            for(let i = cy+1; i >= 2024; i--) ys.add(new Option(i + " 年", i));
-            ys.value = new Date().getFullYear();
-            qs.value = getQuarter(new Date());
-        }
-
-        const targetY = ys.value;
-        const months = getQuarterMonths(qs.value);
-        let html = "";
-
-        months.forEach((m, idx) => {
-            const keys = Object.keys(cloudData.db).filter(k => {
-                const d = new Date(k);
-                return d.getFullYear().toString() === targetY && (d.getMonth()+1) === m;
-            }).sort((a,b) => new Date(b) - new Date(a));
-
-            const isLast = idx === months.length - 1;
-            html += `
-                <div class="month-accordion">
-                    <div class="month-header" onclick="toggleAccordion(this)">
-                        <span>📅 ${m}月 紀錄 (${keys.length} 筆)</span>
-                        <div class="month-actions">
-                            ${(currentRole === 'manager' && keys.length > 0) ? `<button class="btn-delete-month" onclick="deleteFullMonth('${targetY}', ${m}, event)">🗑️ 刪除整月</button>` : ''}
-                            <span class="month-arrow">▼</span>
-                        </div>
-                    </div>
-                    <div class="month-content ${isLast ? 'active' : ''}">
-                        <table class="history-table">
-                            <thead><tr><th>日期</th><th>營業額</th><th>毛利</th>${currentRole==='manager'?'<th>操作</th>':''}</tr></thead>
-                            <tbody>
-                                ${keys.length === 0 ? '<tr><td colspan="4">無資料</td></tr>' : keys.map(k => `
-                                    <tr>
-                                        <td style="font-weight:bold">${k}</td>
-                                        ${currentRole==='manager' ? 
-                                        `<td><input type="number" id="hist_r_${k}" value="${cloudData.db[k].r}"></td>
-                                         <td><input type="number" id="hist_p_${k}" value="${cloudData.db[k].p}"></td>
-                                         <td><button class="btn-update" onclick="updateHistory('${k}')">更新</button><button class="btn-delete" onclick="deleteHistory('${k}')">刪</button></td>` :
-                                        `<td class="readonly-num">$ ${formatNum(cloudData.db[k].r)}</td><td class="readonly-num">$ ${formatNum(cloudData.db[k].p)}</td>`}
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-        document.getElementById('historyModal').style.display = 'flex';
-    }
-
-    function toggleAccordion(h) {
-        const c = h.nextElementSibling;
-        c.classList.toggle('active');
-    }
-
-    async function deleteFullMonth(y, m, e) {
-        e.stopPropagation();
-        if(!confirm(`⚠️ 確定要刪除 ${y}年 ${m}月 的「整月」所有資料嗎？此動作無法復原！`)) return;
-        Object.keys(cloudData.db).forEach(k => {
-            const d = new Date(k);
-            if(d.getFullYear().toString() === y && (d.getMonth()+1) === m) delete cloudData.db[k];
-        });
-        await saveToCloud();
-        openHistoryModal();
-    }
-
-    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
-    async function updateHistory(k) {
-        cloudData.db[k] = { r: Number(document.getElementById(`hist_r_${k}`).value), p: Number(document.getElementById(`hist_p_${k}`).value) };
-        await saveToCloud(); alert('更新完成'); loadInputForDate();
-    }
-    async function deleteHistory(k) {
-        if(confirm('刪除？')) { delete cloudData.db[k]; await saveToCloud(); openHistoryModal(); loadInputForDate(); }
-    }
-
-    // --- 計算 (保持原本邏輯) ---
+    // --- 核心計算 (修復 ID 連動) ---
     function calculateDashboard() {
         const ds = document.getElementById('currentDate').value; if(!ds) return;
         const d = new Date(ds); const y = d.getFullYear(); const m = d.getMonth()+1; const day = d.getDate(); const q = getQuarter(d);
+        
         if(!cloudData.configs[y]) cloudData.configs[y] = {};
         if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
         const c = cloudData.configs[y][q];
+        
         const tRev = c.revTiers[c.activeRevIdx]; const tProf = c.profTiers[c.activeProfIdx];
         const qMs = getQuarterMonths(q); const mIdx = qMs.indexOf(m);
+        
         document.getElementById('mRevTargetName').innerText = tierNames[c.activeRevIdx];
         document.getElementById('mProfTargetName').innerText = tierNames[c.activeProfIdx];
         document.getElementById('qTargetRevDisp').innerText = formatNum(tRev);
@@ -515,6 +381,7 @@
         
         document.getElementById('qSumRev').innerText = formatNum(qR);
         document.getElementById('qSumProf').innerText = formatNum(qP);
+        document.getElementById('qExpRev').innerText = formatNum(tRev * (qR/tRev || 0)); // 簡化應達顯示
         document.getElementById('qDistRev').innerText = formatNum(Math.max(0, tRev - qR));
         document.getElementById('qDistProf').innerText = formatNum(Math.max(0, tProf - qP));
         updateBar('qBarRev', 'qRateTextRev', null, (tRev===0?0:(qR/tRev)*100), true, null, day);
@@ -535,17 +402,53 @@
         }
     }
 
-    // --- 設定 ---
+    // --- 歷史紀錄摺疊與刪除 ---
+    function openHistoryModal() {
+        const con = document.getElementById('historyAccordionContainer');
+        const ys = document.getElementById('histYearSelect'); const qs = document.getElementById('histQuarterSelect');
+        if (ys.innerHTML === "") {
+            const cy = new Date().getFullYear(); for(let i = cy+1; i >= 2024; i--) ys.add(new Option(i + " 年", i));
+            ys.value = new Date().getFullYear(); qs.value = getQuarter(new Date());
+        }
+        const ty = ys.value; const tm = getQuarterMonths(qs.value);
+        let html = "";
+        tm.forEach((m, idx) => {
+            const ks = Object.keys(cloudData.db).filter(k => { const d = new Date(k); return d.getFullYear().toString() === ty && (d.getMonth()+1) === m; }).sort((a,b) => new Date(b) - new Date(a));
+            html += `<div class="month-accordion">
+                <div class="month-header" onclick="this.nextElementSibling.classList.toggle('active')">
+                    <span>📅 ${m}月 紀錄 (${ks.length} 筆)</span>
+                    <div>${(currentRole==='manager' && ks.length>0)?`<button class="btn-delete-month" onclick="deleteFullMonth('${ty}', ${m}, event)">🗑️ 刪除整月</button>`:''} ▼</div>
+                </div>
+                <div class="month-content ${idx===tm.length-1?'active':''}">
+                    <table class="history-table">
+                        <thead><tr><th>日期</th><th>營業額</th><th>毛利</th>${currentRole==='manager'?'<th>操作</th>':''}</tr></thead>
+                        <tbody>${ks.length===0?'<tr><td colspan="4">無資料</td></tr>':ks.map(k=>`<tr>
+                            <td>${k}</td>
+                            ${currentRole==='manager'?`<td><input type="number" id="hist_r_${k}" value="${cloudData.db[k].r}" style="width:100px"></td><td><input type="number" id="hist_p_${k}" value="${cloudData.db[k].p}" style="width:100px"></td><td><button onclick="updateHistory('${k}')">更</button><button onclick="deleteHistory('${k}')">刪</button></td>`:`<td class="readonly-num">${formatNum(cloudData.db[k].r)}</td><td class="readonly-num">${formatNum(cloudData.db[k].p)}</td>`}
+                        </tr>`).join('')}</tbody>
+                    </table>
+                </div>
+            </div>`;
+        });
+        con.innerHTML = html; document.getElementById('historyModal').style.display = 'flex';
+    }
+
+    async function deleteFullMonth(y, m, e) {
+        e.stopPropagation(); if(!confirm(`確定刪除 ${y}年 ${m}月 整月資料？`)) return;
+        Object.keys(cloudData.db).forEach(k => { const d = new Date(k); if(d.getFullYear().toString()===y && (d.getMonth()+1)===m) delete cloudData.db[k]; });
+        await saveToCloud(); openHistoryModal();
+    }
+    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
+    async function updateHistory(k) { cloudData.db[k] = { r: Number(document.getElementById(`hist_r_${k}`).value), p: Number(document.getElementById(`hist_p_${k}`).value) }; await saveToCloud(); alert('更新成功'); }
+    async function deleteHistory(k) { if(confirm('刪除？')) { delete cloudData.db[k]; await saveToCloud(); openHistoryModal(); } }
+
+    // --- 設定管理 ---
     function openSettingsModal() {
-        const d = new Date(document.getElementById('currentDate').value);
-        const y = d.getFullYear(); const q = getQuarter(d);
+        const d = new Date(document.getElementById('currentDate').value); const y = d.getFullYear(); const q = getQuarter(d);
         document.getElementById('settingsTitle').innerText = `⚙️ ${y} ${q} 參數設定`;
-        if(!cloudData.configs[y]) cloudData.configs[y] = {};
-        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        const c = cloudData.configs[y][q];
+        const c = cloudData.configs[y]?.[q] || DEFAULT_CONFIG;
         for(let i=1; i<=4; i++) { document.getElementById(`cfgRev${i}`).value = c.revTiers[i-1]; document.getElementById(`cfgProf${i}`).value = c.profTiers[i-1]; }
-        document.getElementsByName('activeRev')[c.activeRevIdx].checked = true;
-        document.getElementsByName('activeProf')[c.activeProfIdx].checked = true;
+        document.getElementsByName('activeRev')[c.activeRevIdx].checked = true; document.getElementsByName('activeProf')[c.activeProfIdx].checked = true;
         document.getElementById('cfgW1').value = c.weights[0]; document.getElementById('cfgW2').value = c.weights[1]; document.getElementById('cfgW3').value = c.weights[2];
         document.getElementById('settingsModal').style.display = 'flex';
     }
@@ -553,23 +456,23 @@
     async function saveSettings() {
         const d = new Date(document.getElementById('currentDate').value); const y = d.getFullYear(); const q = getQuarter(d);
         const w = [Number(document.getElementById('cfgW1').value), Number(document.getElementById('cfgW2').value), Number(document.getElementById('cfgW3').value)];
-        if(w[0]+w[1]+w[2] !== 100) { document.getElementById('weightWarning').innerText = "權重須=100%"; return; }
-        const c = cloudData.configs[y][q];
-        for(let i=1; i<=4; i++) { c.revTiers[i-1] = Number(document.getElementById(`cfgRev${i}`).value); c.profTiers[i-1] = Number(document.getElementById(`cfgProf${i}`).value); }
-        c.activeRevIdx = Number(document.querySelector('input[name="activeRev"]:checked').value);
-        c.activeProfIdx = Number(document.querySelector('input[name="activeProf"]:checked').value);
-        c.weights = w; closeSettingsModal(); await saveToCloud(); alert('同步完成');
+        if(w[0]+w[1]+w[2] !== 100) return alert('權重須=100%');
+        if(!cloudData.configs[y]) cloudData.configs[y] = {};
+        cloudData.configs[y][q] = {
+            revTiers: [1,2,3,4].map(i=>Number(document.getElementById(`cfgRev${i}`).value)),
+            profTiers: [1,2,3,4].map(i=>Number(document.getElementById(`cfgProf${i}`).value)),
+            activeRevIdx: Number(document.querySelector('input[name="activeRev"]:checked').value),
+            activeProfIdx: Number(document.querySelector('input[name="activeProf"]:checked').value),
+            weights: w
+        };
+        await saveToCloud(); closeSettingsModal(); alert('設定同步完成');
     }
 
     // --- 啟動 ---
     document.getElementById('currentDate').addEventListener('change', loadInputForDate);
     document.getElementById('dailyRevInput').addEventListener('input', calculateDashboard);
     document.getElementById('dailyProfInput').addEventListener('input', calculateDashboard);
-
-    window.onload = function() {
-        document.getElementById('currentDate').value = getTodayString();
-        loadFromCloud();
-    };
+    window.onload = () => { document.getElementById('currentDate').value = getTodayString(); loadFromCloud(); };
 </script>
 </body>
 </html>
