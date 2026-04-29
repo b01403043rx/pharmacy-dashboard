@@ -3,116 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>門市營運目標追蹤看板 (全年度雲端版)</title>
+    <title>門市營運目標看板 (全年度通用雲端版)</title>
     <style>
-        /* 整體藍白配色主題 */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F0F8FF; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; background: #FFFFFF; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(13, 71, 161, 0.08); position: relative; }
-        .header-area { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E3F2FD; padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
-        h1 { color: #0D47A1; margin: 0; font-weight: 800; }
-        .header-controls { display: flex; align-items: center; gap: 15px; }
+        /* === 現代化藍白配色主題 === */
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-blue: #1976D2;
+            --bg-ice-blue: #F0F8FF;
+            --bg-card-blue: #E3F2FD;
+            --text-dark-blue: #0D47A1;
+            --accent-green: #A5D6A7;
+            --accent-pink: #FFCDD2;
+            --danger-red: #D32F2F;
+        }
 
-        .role-selector { display: flex; align-items: center; gap: 8px; background: #E3F2FD; padding: 6px 12px; border-radius: 8px; border: 1px solid #90CAF9; }
-        .role-selector label { margin: 0; color: #1565C0; font-weight: bold; font-size: 14px;}
-        .role-selector select { border: none; background: transparent; font-size: 15px; font-weight: bold; color: #0D47A1; outline: none; cursor: pointer; }
+        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background-color: var(--bg-ice-blue); color: #333; margin: 0; padding: 20px; }
+        
+        .container { 
+            max-width: 1200px; margin: 0 auto; background: #FFFFFF; padding: 30px; 
+            border-radius: 16px; box-shadow: 0 10px 30px rgba(13, 71, 161, 0.1); position: relative; 
+        }
 
-        .settings-btn { background-color: #1565C0; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; transition: background 0.3s; }
-        .settings-btn:hover { background-color: #0D47A1; }
+        .header-area { 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 2px solid #E3F2FD; padding-bottom: 20px; margin-bottom: 30px; 
+            flex-wrap: wrap; gap: 15px;
+        }
+        h1 { color: var(--text-dark-blue); margin: 0; font-weight: 800; font-size: 28px; }
         
-        .daily-input-section { display: flex; align-items: flex-end; gap: 15px; margin-bottom: 30px; background: #E3F2FD; padding: 20px; border-radius: 10px; border: 1px solid #BBDEFB; flex-wrap: wrap; }
-        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 150px; }
-        label { font-weight: bold; margin-bottom: 8px; color: #0D47A1; font-size: 14px; }
-        
-        input[type="number"], input[type="text"], input[type="password"] { padding: 10px; border: 1px solid #90CAF9; border-radius: 6px; font-size: 16px; font-weight: bold; color: #1565C0; background-color: #FAFCFF; text-align: right; }
-        #loginUsername, #loginPassword { text-align: left; }
-        input[type="date"] { padding: 10px; border: 1px solid #90CAF9; border-radius: 6px; font-size: 16px; font-weight: bold; color: #1565C0; background-color: #FAFCFF; }
-        input:focus { outline: none; border-color: #1565C0; background-color: #FFF; }
-        input:disabled { background-color: #ECEFF1; color: #78909C; cursor: not-allowed; border-color: #CFD8DC; }
-        
-        .btn-group-row { display: flex; gap: 10px; align-items: center; }
-        .save-btn { padding: 10px 20px; background-color: #1976D2; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; height: 42px; }
-        .save-btn:hover { background-color: #115293; }
-        .history-btn { padding: 10px 20px; background-color: #0288D1; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; height: 42px; }
-        .history-btn:hover { background-color: #01579B; }
+        /* 權限選單優化 */
+        .role-selector { 
+            display: flex; align-items: center; gap: 10px; 
+            background: var(--bg-card-blue); padding: 8px 16px; border-radius: 50px; border: 1px solid #90CAF9;
+        }
+        .role-selector select { 
+            border: none; background: transparent; font-size: 15px; font-weight: bold; 
+            color: var(--text-dark-blue); cursor: pointer; outline: none;
+        }
 
+        /* 按鈕美化 */
+        .btn-base {
+            padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;
+            transition: all 0.3s ease; border: none; font-size: 15px; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .settings-btn { background-color: var(--primary-blue); color: white; }
+        .settings-btn:hover { background-color: var(--text-dark-blue); transform: translateY(-2px); }
+        
+        .save-btn { background-color: #2E7D32; color: white; }
+        .save-btn:hover { background-color: #1B5E20; transform: translateY(-2px); }
+        
+        .history-btn { background-color: #0288D1; color: white; }
+        .history-btn:hover { background-color: #01579B; transform: translateY(-2px); }
+
+        /* 每日輸入區 */
+        .daily-input-section { 
+            display: flex; align-items: flex-end; gap: 20px; margin-bottom: 30px; 
+            background: var(--bg-card-blue); padding: 25px; border-radius: 12px; border: 1px solid #BBDEFB; flex-wrap: wrap;
+        }
+        .input-group { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
+        .input-group label { font-weight: bold; margin-bottom: 8px; color: var(--text-dark-blue); font-size: 14px; }
+        
+        input[type="number"], input[type="date"], input[type="text"], input[type="password"] { 
+            padding: 12px; border: 1px solid #90CAF9; border-radius: 8px; font-size: 16px; 
+            font-weight: bold; color: var(--primary-blue); background-color: #FAFCFF; transition: all 0.3s;
+        }
+        input[type="number"] { text-align: right; }
+        input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2); outline: none; background-color: #FFF; }
+        input:disabled { background-color: #ECEFF1; color: #90A4AE; cursor: not-allowed; }
+
+        /* 儀表板卡片 */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
-        .column-header { text-align: center; background: #1565C0; color: white; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 18px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 2px 8px rgba(21, 101, 192, 0.2); }
-        .card-monthly, .card-quarterly { border: 1px solid #90CAF9; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); background-color: #E3F2FD; }
-        .card-monthly h2, .card-quarterly h2 { margin-top: 0; color: #0D47A1; font-size: 18px; border-bottom: 2px solid #BBDEFB; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; }
-        .actual-sum { font-size: 14px; color: #1565C0; font-weight: bold; background: #FFFFFF; padding: 4px 10px; border-radius: 20px;}
-        
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .stat-box { background: #FFFFFF; padding: 15px; border-radius: 8px; border: 1px solid #E3F2FD; box-shadow: 0 2px 5px rgba(21, 101, 192, 0.05); }
-        .color-dynamic-box { transition: background-color 0.4s ease; }
-        .stat-title { font-size: 13px; color: #546E7A; margin-bottom: 5px; font-weight: bold;}
-        .stat-value { font-size: 18px; font-weight: bold; color: #0D47A1; text-align: right; }
-        
-        .distance-val { color: #D32F2F; }
-        .dynamic-req { color: #D32F2F; font-weight: bold; } 
-        
-        .progress-container { width: 100%; background-color: #FFFFFF; border-radius: 8px; overflow: hidden; height: 24px; position: relative; margin-bottom: 5px; border: 1px solid #BBDEFB; }
-        .progress-bar { height: 100%; transition: width 0.4s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: bold; box-sizing: border-box; background-color: #1565C0; color: #FFFFFF; }
-        .rate-text { font-weight: bold; font-size: 14px; color: #1565C0; }
-        .motivation-text { font-size: 13px; font-weight: bold; margin-top: 5px; text-align: right; min-height: 18px; letter-spacing: 0.5px; }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 71, 161, 0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: #FFF; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-        .modal-content h3 { margin-top: 0; color: #0D47A1; border-bottom: 2px solid #E3F2FD; padding-bottom: 10px; }
-        
-        /* 歷史篩選與摺疊樣式 */
-        .history-filter-bar { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; background: #F5F9FF; padding: 12px; border-radius: 8px; border: 1px solid #BBDEFB; flex-wrap: wrap;}
-        .history-filter-bar select { padding: 6px 10px; border-radius: 6px; border: 1px solid #90CAF9; color: #0D47A1; font-weight: bold; font-size: 14px; outline: none; background: #FFF;}
-
-        .history-table-container { max-height: 50vh; overflow-y: auto; }
-        
-        /* 🚀 月份摺疊列樣式 */
-        .month-accordion { margin-bottom: 8px; border-radius: 8px; overflow: hidden; border: 1px solid #90CAF9; }
-        .month-header { 
-            background: linear-gradient(90deg, #1565C0, #1976D2); color: white; padding: 10px 15px; 
-            font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            user-select: none;
+        .column-header { 
+            text-align: center; background: var(--primary-blue); color: white; padding: 14px; 
+            border-radius: 10px; margin-bottom: 20px; font-size: 18px; font-weight: bold; 
+            box-shadow: 0 4px 10px rgba(21, 101, 192, 0.2);
         }
-        .month-header:hover { background: #0D47A1; }
-        .month-content { display: none; background: #FFF; padding: 0; }
+
+        .card { 
+            border: 1px solid #90CAF9; border-radius: 12px; padding: 25px; margin-bottom: 20px; 
+            background-color: var(--bg-card-blue); box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        .card h2 { 
+            margin-top: 0; color: var(--text-dark-blue); font-size: 19px; border-bottom: 2px solid #BBDEFB; 
+            padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center; 
+        }
+        .actual-sum { font-size: 14px; background: #FFFFFF; padding: 5px 12px; border-radius: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: #FFFFFF; padding: 15px; border-radius: 10px; border: 1px solid #E3F2FD; }
+        .stat-title { font-size: 13px; color: #546E7A; margin-bottom: 6px; font-weight: bold; }
+        .stat-value { font-size: 20px; font-weight: bold; color: var(--text-dark-blue); text-align: right; }
+        
+        /* 進度條 */
+        .progress-container { width: 100%; background-color: #FFFFFF; border-radius: 10px; overflow: hidden; height: 26px; border: 1px solid #BBDEFB; margin-top: 10px; }
+        .progress-bar { 
+            height: 100%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; align-items: center; justify-content: flex-end; 
+            padding-right: 10px; font-size: 12px; font-weight: bold; color: white; background-color: var(--primary-blue);
+        }
+
+        /* 歷史資料 - 月份摺疊優化 */
+        .month-accordion { margin-bottom: 15px; border-radius: 10px; overflow: hidden; border: 1px solid #90CAF9; background: white;}
+        .month-header { 
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)); color: white; 
+            padding: 12px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+        }
+        .month-header:hover { filter: brightness(1.1); }
+        .month-actions { display: flex; align-items: center; gap: 15px; }
+        .btn-delete-month { 
+            background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255,255,255,0.5);
+            padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-delete-month:hover { background-color: var(--danger-red); border-color: transparent; }
+
+        .month-content { display: none; padding: 0; }
         .month-content.active { display: block; }
-        .month-arrow { transition: transform 0.3s; font-size: 12px; }
-        .active .month-arrow { transform: rotate(180deg); }
-
+        
         .history-table { width: 100%; border-collapse: collapse; }
-        .history-table th, .history-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid #E3F2FD; font-size: 14px; }
-        .history-table th { background-color: #E3F2FD; color: #0D47A1; font-weight: bold; position: sticky; top: 0; z-index: 1; }
-        .history-table tbody tr:hover { background-color: #F5F9FF; }
-        .readonly-num { text-align: right; font-weight: bold; color: #0D47A1; font-size: 15px; }
-
-        .btn-update { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px;}
-        .btn-delete { background-color: #D32F2F; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; margin-left: 3px;}
-
-        #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
-        .spinner { border: 6px solid #E3F2FD; border-top: 6px solid #1565C0; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin-bottom: 15px;}
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .history-table th { background-color: #E3F2FD; color: var(--text-dark-blue); padding: 12px; text-align: center; }
+        .history-table td { padding: 12px; text-align: center; border-bottom: 1px solid #F0F4F8; }
+        
+        /* 彈窗樣式 */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,20,50,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal-content { background: #FFF; padding: 35px; border-radius: 16px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        
+        #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
 
-<div id="loadingOverlay">
-    <div class="spinner"></div>
-    <p style="color:#1565C0; font-weight:bold; margin-top:10px;">雲端同步中...</p>
-</div>
+<div id="loadingOverlay"><div class="spinner"></div><p style="color:var(--primary-blue); font-weight:bold; margin-top:15px;">雲端資料同步中...</p></div>
 
 <div class="container">
     <div class="header-area">
-        <h1>門市營運追蹤看板</h1>
+        <h1>營運目標追蹤看板</h1>
         <div class="header-controls">
             <div class="role-selector">
-                <label>登入身分：</label>
+                <label>登入身分</label>
                 <select id="roleSelect" onchange="changeRole()">
                     <option value="employee">👤 一般員工</option>
                     <option value="manager">👑 門市主管</option>
                 </select>
             </div>
-            <button class="settings-btn" id="btnSettings" onclick="openSettingsModal()" style="display:none;">⚙️ 目標與參數設定</button>
+            <button class="btn-base settings-btn" id="btnSettings" onclick="openSettingsModal()" style="display:none;">⚙️ 參數設定</button>
         </div>
     </div>
     
@@ -122,144 +158,134 @@
             <input type="date" id="currentDate">
         </div>
         <div class="input-group">
-            <label>【本日單日】營業額 ($)</label>
-            <input type="number" id="dailyRevInput" placeholder="輸入當日業績" value="0">
+            <label>單日營業額 ($)</label>
+            <input type="number" id="dailyRevInput" placeholder="0">
         </div>
         <div class="input-group">
-            <label>【本日單日】毛利 ($)</label>
-            <input type="number" id="dailyProfInput" placeholder="輸入當日毛利" value="0">
+            <label>單日毛利 ($)</label>
+            <input type="number" id="dailyProfInput" placeholder="0">
         </div>
         <div class="btn-group-row">
-            <button class="save-btn" id="btnSave" onclick="saveDailyData()">💾 儲存今日數據</button>
-            <button class="history-btn" onclick="openHistoryModal()">📅 歷史資料管理</button>
+            <button class="btn-base save-btn" id="btnSave" onclick="saveDailyData()">💾 儲存數據</button>
+            <button class="btn-base history-btn" onclick="openHistoryModal()">📅 歷史管理</button>
         </div>
     </div>
 
     <div class="dashboard-grid">
         <div>
-            <div class="column-header">【當月】滾動進度與每日追蹤</div>
-            <div class="card-monthly" id="card-mRev">
-                <h2>營業額 (<span id="mRevTargetName">目標</span>本月動態: <span id="mTargetRev">0</span>) <span class="actual-sum">本月已累計: <span id="mSumRev">0</span></span></h2>
+            <div class="column-header">當月滾動追蹤</div>
+            <div class="card" id="card-mRev">
+                <h2>營業額 (<span id="mRevTargetName">目標</span>) <span class="actual-sum">累計: <span id="mSumRev">0</span></span></h2>
                 <div class="stats-grid">
-                    <div class="stat-box"><div class="stat-title">截至今日動態應達</div><div class="stat-value" id="mExpRev">0</div></div>
-                    <div class="stat-box"><div class="stat-title">明日起後續需達</div><div class="stat-value" id="mReqDailyRev">0</div></div>
-                    <div class="stat-box color-dynamic-box" id="mDistBoxRev" style="grid-column: span 2;"><div class="stat-title">🚩 距離【當月動態目標】還差</div><div class="stat-value distance-val" id="mDistRev">0</div></div>
+                    <div class="stat-box"><div class="stat-title">當前動態目標</div><div class="stat-value" id="mTargetRev">0</div></div>
+                    <div class="stat-box"><div class="stat-title">明日起每日需達</div><div class="stat-value" id="mReqDailyRev">0</div></div>
+                    <div class="stat-box color-dynamic-box" id="mDistBoxRev" style="grid-column: span 2;"><div class="stat-title">🚩 距離動態目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="mDistRev">0</div></div>
                 </div>
-                <div class="stat-title">當日達成率 (輸入 / 滾動應達: <span class="dynamic-req" id="mReqTodayRevDisp">0</span>) <span class="rate-text" id="mRateTextRev">0%</span></div>
+                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">今日達成率 (目標: <span id="mReqTodayRevDisp">0</span>) <span class="rate-text" id="mRateTextRev">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="mBarRev" style="width: 0%;">0%</div></div>
                 <div class="motivation-text" id="mMotRev"></div>
             </div>
 
-            <div class="card-monthly" id="card-mProf">
-                <h2>毛利 (<span id="mProfTargetName">目標</span>本月動態: <span id="mTargetProf">0</span>) <span class="actual-sum">本月已累計: <span id="mSumProf">0</span></span></h2>
+            <div class="card" id="card-mProf">
+                <h2>毛利 (<span id="mProfTargetName">目標</span>) <span class="actual-sum">累計: <span id="mSumProf">0</span></span></h2>
                 <div class="stats-grid">
-                    <div class="stat-box"><div class="stat-title">截至今日動態應達</div><div class="stat-value" id="mExpProf">0</div></div>
-                    <div class="stat-box"><div class="stat-title">明日起後續需達</div><div class="stat-value" id="mReqDailyProf">0</div></div>
-                    <div class="stat-box color-dynamic-box" id="mDistBoxProf" style="grid-column: span 2;"><div class="stat-title">🚩 距離【當月動態目標】還差</div><div class="stat-value distance-val" id="mDistProf">0</div></div>
+                    <div class="stat-box"><div class="stat-title">當前動態目標</div><div class="stat-value" id="mTargetProf">0</div></div>
+                    <div class="stat-box"><div class="stat-title">明日起每日需達</div><div class="stat-value" id="mReqDailyProf">0</div></div>
+                    <div class="stat-box color-dynamic-box" id="mDistBoxProf" style="grid-column: span 2;"><div class="stat-title">🚩 距離動態目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="mDistProf">0</div></div>
                 </div>
-                <div class="stat-title">當日達成率 (輸入 / 滾動應達: <span class="dynamic-req" id="mReqTodayProfDisp">0</span>) <span class="rate-text" id="mRateTextProf">0%</span></div>
+                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">今日達成率 (目標: <span id="mReqTodayProfDisp">0</span>) <span class="rate-text" id="mRateTextProf">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="mBarProf" style="width: 0%;">0%</div></div>
                 <div class="motivation-text" id="mMotProf"></div>
             </div>
         </div>
 
         <div>
-            <div class="column-header">【全季】設定目標追蹤</div>
-            <div class="card-quarterly" id="card-qRev">
-                <h2>全季營業額 (<span id="qRevTargetName">目標</span>設定: <span id="qTargetRevDisp">0</span>) <span class="actual-sum">本季已累計: <span id="qSumRev">0</span></span></h2>
+            <div class="column-header">全季目標追蹤</div>
+            <div class="card">
+                <h2>全季營業額 <span class="actual-sum">已累計: <span id="qSumRev">0</span></span></h2>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-title">截至今日應達</div><div class="stat-value" id="qExpRev">0</div></div>
-                    <div class="stat-box"><div class="stat-title">季後續每日需達</div><div class="stat-value" id="qReqDailyRev">0</div></div>
-                    <div class="stat-box" style="grid-column: span 2; background-color: #ffffff;"><div class="stat-title">🎯 距離【全季設定目標】還差</div><div class="stat-value distance-val" id="qDistRev">0</div></div>
+                    <div class="stat-box"><div class="stat-title">全季最終設定目標</div><div class="stat-value" id="qTargetRevDisp">0</div></div>
+                    <div class="stat-box" style="grid-column: span 2; background-color: #fff;"><div class="stat-title">🎯 距離全季目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="qDistRev">0</div></div>
                 </div>
-                <div class="stat-title">全季達成率 (已累計 / 最終設定目標) <span class="rate-text" id="qRateTextRev">0%</span></div>
+                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">全季總進度 <span class="rate-text" id="qRateTextRev">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="qBarRev" style="width: 0%;">0%</div></div>
             </div>
 
-            <div class="card-quarterly" id="card-qProf">
-                <h2>全季毛利 (<span id="qProfTargetName">目標</span>設定: <span id="qTargetProfDisp">0</span>) <span class="actual-sum">本季已累計: <span id="qSumProf">0</span></span></h2>
+            <div class="card">
+                <h2>全季毛利 <span class="actual-sum">已累計: <span id="qSumProf">0</span></span></h2>
                 <div class="stats-grid">
                     <div class="stat-box"><div class="stat-title">截至今日應達</div><div class="stat-value" id="qExpProf">0</div></div>
-                    <div class="stat-box"><div class="stat-title">季後續每日需達</div><div class="stat-value" id="qReqDailyProf">0</div></div>
-                    <div class="stat-box" style="grid-column: span 2; background-color: #ffffff;"><div class="stat-title">🎯 距離【全季設定目標】還差</div><div class="stat-value distance-val" id="qDistProf">0</div></div>
+                    <div class="stat-box"><div class="stat-title">全季最終設定目標</div><div class="stat-value" id="qTargetProfDisp">0</div></div>
+                    <div class="stat-box" style="grid-column: span 2; background-color: #fff;"><div class="stat-title">🎯 距離全季目標還差</div><div class="stat-value" style="color:var(--danger-red)" id="qDistProf">0</div></div>
                 </div>
-                <div class="stat-title">全季達成率 (已累計 / 最終設定目標) <span class="rate-text" id="qRateTextProf">0%</span></div>
+                <div class="stat-title" style="font-size:13px; font-weight:bold; color:var(--primary-blue)">全季總進度 <span class="rate-text" id="qRateTextProf">0%</span></div>
                 <div class="progress-container"><div class="progress-bar" id="qBarProf" style="width: 0%;">0%</div></div>
             </div>
         </div>
     </div>
 </div>
 
+<div id="historyModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 900px;">
+        <h3 style="color:var(--text-dark-blue); margin-top:0;">📅 歷史營運資料管理</h3>
+        
+        <div class="history-filter-bar">
+            <label>年份</label><select id="histYearSelect" onchange="openHistoryModal()"></select>
+            <label>季度</label>
+            <select id="histQuarterSelect" onchange="openHistoryModal()">
+                <option value="Q1">Q1 (1-3月)</option><option value="Q2">Q2 (4-6月)</option>
+                <option value="Q3">Q3 (7-9月)</option><option value="Q4">Q4 (10-12月)</option>
+            </select>
+            <span id="historySubtitle" style="margin-left:auto; font-size:13px;"></span>
+        </div>
+
+        <div class="history-table-container" id="historyAccordionContainer"></div>
+        <div class="modal-actions" style="margin-top:20px;"><button class="btn-base settings-btn" style="background:#78909C" onclick="closeHistoryModal()">關閉視窗</button></div>
+    </div>
+</div>
+
 <div id="loginModal" class="modal-overlay">
     <div class="modal-content" style="max-width: 400px;">
-        <h3 style="color:#D32F2F;">🔒 主管權限登入</h3>
-        <div class="settings-section">
-            <div class="input-group" style="margin-bottom:15px;"><label>帳號</label><input type="text" id="loginUsername" onkeypress="handleLoginEnter(event)"></div>
-            <div class="input-group"><label>密碼</label><input type="password" id="loginPassword" onkeypress="handleLoginEnter(event)"></div>
-            <div id="loginError" style="color:#D32F2F; display:none; margin-top:15px; font-weight:bold;">❌ 帳號或密碼錯誤！</div>
-        </div>
-        <div class="modal-actions"><button class="btn-cancel" onclick="cancelLogin()">取消</button><button class="btn-confirm" onclick="verifyLogin()" style="background-color:#D32F2F;">登入</button></div>
+        <h3 style="color:var(--danger-red);">🔒 主管身分驗證</h3>
+        <div class="input-group" style="margin-bottom:15px;"><label>管理帳號</label><input type="text" id="loginUsername" onkeypress="handleLoginEnter(event)"></div>
+        <div class="input-group" style="margin-bottom:15px;"><label>密碼</label><input type="password" id="loginPassword" onkeypress="handleLoginEnter(event)"></div>
+        <div id="loginError" style="color:var(--danger-red); display:none; margin-bottom:10px; font-weight:bold;">❌ 帳號或密碼錯誤</div>
+        <div class="modal-actions"><button class="btn-base" style="background:#90A4AE; color:white" onclick="cancelLogin()">取消</button><button class="btn-base save-btn" onclick="verifyLogin()">登入系統</button></div>
     </div>
 </div>
 
 <div id="settingsModal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>⚙️ <span id="settingsTitle">目標與權重設定</span></h3>
+    <div class="modal-content" style="max-width: 600px;">
+        <h3 id="settingsTitle">⚙️ 目標參數設定</h3>
         <div class="settings-section">
-            <h4>營業額門檻設定</h4>
-            <div class="tier-row"><input type="radio" name="activeRev" value="0"> <label>門檻一:</label> <input type="number" id="cfgRev1"></div>
-            <div class="tier-row"><input type="radio" name="activeRev" value="1"> <label>門檻二:</label> <input type="number" id="cfgRev2"></div>
-            <div class="tier-row"><input type="radio" name="activeRev" value="2"> <label>門檻三:</label> <input type="number" id="cfgRev3"></div>
-            <div class="tier-row"><input type="radio" name="activeRev" value="3"> <label>門檻四:</label> <input type="number" id="cfgRev4"></div>
+            <h4>營業額門檻 (Radio 選取當前目標)</h4>
+            <div class="tier-row"><input type="radio" name="activeRev" value="0"> 檻一 <input type="number" id="cfgRev1"></div>
+            <div class="tier-row"><input type="radio" name="activeRev" value="1"> 檻二 <input type="number" id="cfgRev2"></div>
+            <div class="tier-row"><input type="radio" name="activeRev" value="2"> 檻三 <input type="number" id="cfgRev3"></div>
+            <div class="tier-row"><input type="radio" name="activeRev" value="3"> 檻四 <input type="number" id="cfgRev4"></div>
         </div>
         <div class="settings-section">
-            <h4>毛利門檻設定</h4>
-            <div class="tier-row"><input type="radio" name="activeProf" value="0"> <label>門檻一:</label> <input type="number" id="cfgProf1"></div>
-            <div class="tier-row"><input type="radio" name="activeProf" value="1"> <label>門檻二:</label> <input type="number" id="cfgProf2"></div>
-            <div class="tier-row"><input type="radio" name="activeProf" value="2"> <label>門檻三:</label> <input type="number" id="cfgProf3"></div>
-            <div class="tier-row"><input type="radio" name="activeProf" value="3"> <label>門檻四:</label> <input type="number" id="cfgProf4"></div>
+            <h4>毛利門檻</h4>
+            <div class="tier-row"><input type="radio" name="activeProf" value="0"> 檻一 <input type="number" id="cfgProf1"></div>
+            <div class="tier-row"><input type="radio" name="activeProf" value="1"> 檻二 <input type="number" id="cfgProf2"></div>
+            <div class="tier-row"><input type="radio" name="activeProf" value="2"> 檻三 <input type="number" id="cfgProf3"></div>
+            <div class="tier-row"><input type="radio" name="activeProf" value="3"> 檻四 <input type="number" id="cfgProf4"></div>
         </div>
         <div class="settings-section">
-            <h4>本季各月權重分配 (%)</h4>
+            <h4>月份權重 (%)</h4>
             <div style="display:flex; gap:10px;">
-                <div class="tier-row" style="flex:1"><label>月1:</label> <input type="number" id="cfgW1"> %</div>
-                <div class="tier-row" style="flex:1"><label>月2:</label> <input type="number" id="cfgW2"> %</div>
-                <div class="tier-row" style="flex:1"><label>月3:</label> <input type="number" id="cfgW3"> %</div>
+                <div class="input-group"><label>月1</label><input type="number" id="cfgW1"></div>
+                <div class="input-group"><label>月2</label><input type="number" id="cfgW2"></div>
+                <div class="input-group"><label>月3</label><input type="number" id="cfgW3"></div>
             </div>
-            <small style="color:#d32f2f" id="weightWarning"></small>
+            <small id="weightWarning" style="color:var(--danger-red)"></small>
         </div>
-        <div class="modal-actions"><button class="btn-cancel" onclick="closeSettingsModal()">取消</button><button class="btn-confirm" onclick="saveSettings()">儲存上傳</button></div>
-    </div>
-</div>
-
-<div id="historyModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 850px;">
-        <h3>📅 歷史資料管理</h3>
-        
-        <div class="history-filter-bar">
-            <label style="font-weight:bold; color:#0D47A1;">篩選年份：</label>
-            <select id="histYearSelect" onchange="openHistoryModal()"></select>
-            <label style="font-weight:bold; color:#0D47A1;">季度：</label>
-            <select id="histQuarterSelect" onchange="openHistoryModal()">
-                <option value="Q1">第一季 (1-3月)</option>
-                <option value="Q2">第二季 (4-6月)</option>
-                <option value="Q3">第三季 (7-9月)</option>
-                <option value="Q4">第四季 (10-12月)</option>
-            </select>
-            <p id="historySubtitle" style="margin:0 0 0 auto; font-size:13px; color:#546E7A;"></p>
-        </div>
-
-        <div class="history-table-container" id="historyAccordionContainer">
-            </div>
-
-        <div class="modal-actions"><button class="btn-cancel" onclick="closeHistoryModal()">關閉</button></div>
+        <div class="modal-actions"><button class="btn-base" style="background:#90A4AE; color:white" onclick="closeSettingsModal()">取消</button><button class="btn-base save-btn" onclick="saveSettings()">儲存並同步</button></div>
     </div>
 </div>
 
 <script>
-    // ==========================================
-    // ☁️ 雲端 API 設定
-    // ==========================================
     const BIN_ID = '69f21039856a682189885d65';
     const API_KEY = '$2a$10$7JIthCtCRLFeujaGc3lx7OlEu4qmy/j5af7ZFP01y57byaUo1bDra';
 
@@ -273,306 +299,276 @@
     let currentRole = 'employee'; 
     const tierNames = ["門檻一", "門檻二", "門檻三", "門檻四"];
 
-    function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
-    function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
-
-    // --- 日期工具 ---
-    function getQuarter(date) {
-        const m = date.getMonth() + 1;
-        if (m <= 3) return 'Q1'; if (m <= 6) return 'Q2'; if (m <= 9) return 'Q3'; return 'Q4';
-    }
-    function getQuarterMonths(q) {
-        if (q === 'Q1') return [1, 2, 3]; if (q === 'Q2') return [4, 5, 6];
-        if (q === 'Q3') return [7, 8, 9]; return [10, 11, 12];
-    }
-    function getMonthDays(year, month) { return new Date(year, month, 0).getDate(); }
-    function getTodayString() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+    // --- 工具 ---
     function formatNum(num) { return Math.round(num).toLocaleString('en-US'); }
+    function getTodayString() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+    function getQuarter(date) { const m = date.getMonth() + 1; if (m <= 3) return 'Q1'; if (m <= 6) return 'Q2'; if (m <= 9) return 'Q3'; return 'Q4'; }
+    function getQuarterMonths(q) { if (q === 'Q1') return [1, 2, 3]; if (q === 'Q2') return [4, 5, 6]; if (q === 'Q3') return [7, 8, 9]; return [10, 11, 12]; }
+    function getMonthDays(y, m) { return new Date(y, m, 0).getDate(); }
 
-    // --- 雲端存取 ---
+    // --- 雲端 ---
     async function loadFromCloud() {
-        showLoading();
+        document.getElementById('loadingOverlay').style.display = 'flex';
         try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
-            const result = await response.json();
-            if (result.record) {
-                cloudData.db = result.record.db || {};
-                cloudData.configs = result.record.configs || {};
-            }
-        } catch (e) { console.error('Cloud load failed', e); }
-        hideLoading();
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+            const data = await res.json();
+            if (data.record) { cloudData.db = data.record.db || {}; cloudData.configs = data.record.configs || {}; }
+        } catch (e) { console.error(e); }
+        document.getElementById('loadingOverlay').style.display = 'none';
         applyRoleRestrictions();
     }
 
     async function saveToCloud() {
-        calculateDashboard();
+        calculateDashboard(); // 先本地反應
         try {
             await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                 method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
                 body: JSON.stringify(cloudData)
             });
-        } catch (e) { alert('雲端存檔失敗，請檢查網路。'); }
+        } catch (e) { alert('同步失敗'); }
     }
 
-    // --- 權限系統 ---
+    // --- 權限 ---
     function changeRole() {
         if (document.getElementById('roleSelect').value === 'manager') {
-            document.getElementById('loginUsername').value = ''; document.getElementById('loginPassword').value = '';
-            document.getElementById('loginError').style.display = 'none'; document.getElementById('loginModal').style.display = 'flex';
-        } else {
-            currentRole = 'employee'; applyRoleRestrictions();
-        }
+            document.getElementById('loginModal').style.display = 'flex';
+        } else { currentRole = 'employee'; applyRoleRestrictions(); }
     }
     function verifyLogin() {
         if (document.getElementById('loginUsername').value === '113' && document.getElementById('loginPassword').value === '074322') {
-            document.getElementById('loginModal').style.display = 'none'; currentRole = 'manager'; applyRoleRestrictions();
-            if(document.getElementById('historyModal').style.display === 'flex') openHistoryModal();
+            currentRole = 'manager'; document.getElementById('loginModal').style.display = 'none'; applyRoleRestrictions();
         } else { document.getElementById('loginError').style.display = 'block'; }
     }
-    function cancelLogin() { document.getElementById('loginModal').style.display = 'none'; document.getElementById('roleSelect').value = 'employee'; currentRole = 'employee'; applyRoleRestrictions(); }
+    function cancelLogin() { document.getElementById('loginModal').style.display = 'none'; document.getElementById('roleSelect').value = 'employee'; }
     function handleLoginEnter(e) { if (e.key === 'Enter') verifyLogin(); }
 
     function applyRoleRestrictions() {
-        if (currentRole === 'employee') {
-            document.getElementById('btnSettings').style.display = 'none';
-        } else {
-            document.getElementById('btnSettings').style.display = 'inline-block';
-        }
-        loadInputForDate(); 
+        const isMgr = currentRole === 'manager';
+        document.getElementById('btnSettings').style.display = isMgr ? 'flex' : 'none';
+        loadInputForDate();
     }
 
-    // --- 下載與輸入連動 ---
+    // --- 邏輯 ---
     function loadInputForDate() {
-        const dateStr = document.getElementById('currentDate').value;
-        const revIn = document.getElementById('dailyRevInput');
-        const profIn = document.getElementById('dailyProfInput');
-        const saveBtn = document.getElementById('btnSave');
-        const todayStr = getTodayString();
+        const ds = document.getElementById('currentDate').value;
+        const today = getTodayString();
+        const isToday = ds === today;
+        const isMgr = currentRole === 'manager';
 
-        if(cloudData.db[dateStr]) {
-            revIn.value = cloudData.db[dateStr].r; profIn.value = cloudData.db[dateStr].p;
+        if (cloudData.db[ds]) {
+            document.getElementById('dailyRevInput').value = cloudData.db[ds].r;
+            document.getElementById('dailyProfInput').value = cloudData.db[ds].p;
         } else {
-            revIn.value = ""; profIn.value = "";
+            document.getElementById('dailyRevInput').value = "";
+            document.getElementById('dailyProfInput').value = "";
         }
 
-        if (currentRole === 'employee') {
-            if (dateStr === todayStr) {
-                revIn.disabled = false; profIn.disabled = false; saveBtn.style.display = 'inline-block';
-            } else {
-                revIn.disabled = true; profIn.disabled = true; saveBtn.style.display = 'none';
-            }
-        } else {
-            revIn.disabled = false; profIn.disabled = false; saveBtn.style.display = 'inline-block';
-        }
+        const canEdit = isMgr || isToday;
+        document.getElementById('dailyRevInput').disabled = !canEdit;
+        document.getElementById('dailyProfInput').disabled = !canEdit;
+        document.getElementById('btnSave').style.display = canEdit ? 'flex' : 'none';
+        
         calculateDashboard();
     }
 
-    // --- 核心計算 (全年度通用・滾動版) ---
-    function calculateDashboard() {
-        const selectedDateStr = document.getElementById('currentDate').value;
-        if (!selectedDateStr) return;
-        const d = new Date(selectedDateStr);
-        const y = d.getFullYear(); const m = d.getMonth() + 1; const day = d.getDate(); const q = getQuarter(d);
-        if(!cloudData.configs[y]) cloudData.configs[y] = {};
-        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        const c = cloudData.configs[y][q];
-        const targetRev = c.revTiers[c.activeRevIdx]; const targetProf = c.profTiers[c.activeProfIdx];
-        const qMonths = getQuarterMonths(q); const mIdx = qMonths.indexOf(m);
-        document.getElementById('mRevTargetName').innerText = tierNames[c.activeRevIdx]; document.getElementById('mProfTargetName').innerText = tierNames[c.activeProfIdx];
-        document.getElementById('qTargetRevDisp').innerText = formatNum(targetRev); document.getElementById('qTargetProfDisp').innerText = formatNum(targetProf);
-        const drIn = Number(document.getElementById('dailyRevInput').value) || 0; const dpIn = Number(document.getElementById('dailyProfInput').value) || 0;
-        let qRAct = 0, qPAct = 0, mRBef = 0, mPBef = 0, pMRev = 0, pMProf = 0;
-        for (const [dk, val] of Object.entries(cloudData.db)) {
-            const ed = new Date(dk);
-            if (ed.getFullYear() === y && getQuarter(ed) === q) {
-                if (dk < selectedDateStr) {
-                    qRAct += val.r; qPAct += val.p;
-                    if ((ed.getMonth() + 1) < m) { pMRev += val.r; pMProf += val.p; }
-                    else if ((ed.getMonth() + 1) === m) { mRBef += val.r; mPBef += val.p; }
-                }
-            }
-        }
-        let mRTotal = mRBef + drIn; let mPTotal = mPBef + dpIn; qRAct += drIn; qPAct += dpIn;
-        let remW = 0; for(let i = mIdx; i < 3; i++) remW += c.weights[i];
-        let wR = remW > 0 ? (c.weights[mIdx] / remW) : 1;
-        const mTR = Math.max(0, (targetRev - pMRev) * wR); const mTP = Math.max(0, (targetProf - pMProf) * wR);
-        const mDs = getMonthDays(y, m); const dLI = mDs - day + 1;
-        const mRTR = Math.max(0, (mTR - mRBef) / dLI); const mRTP = Math.max(0, (mTP - mPBef) / dLI);
-        const mRR = mRTR === 0 ? (drIn > 0 ? 100 : 0) : (drIn / mRTR) * 100; const mRP = mRTP === 0 ? (dpIn > 0 ? 100 : 0) : (dpIn / mRTP) * 100;
-        const dLA = mDs - day;
-        document.getElementById('mSumRev').innerText = formatNum(mRTotal); document.getElementById('mSumProf').innerText = formatNum(mPTotal);
-        document.getElementById('mTargetRev').innerText = formatNum(mTR); document.getElementById('mTargetProf').innerText = formatNum(mTP);
-        document.getElementById('mExpRev').innerText = formatNum(mTR * (day/mDs)); document.getElementById('mExpProf').innerText = formatNum(mTP * (day/mDs));
-        document.getElementById('mReqDailyRev').innerText = formatNum(dLA<=0?0:(mTR-mRTotal)/dLA)+" /天"; document.getElementById('mReqDailyProf').innerText = formatNum(dLA<=0?0:(mTP-mPTotal)/dLA)+" /天";
-        document.getElementById('mDistRev').innerText = formatNum(Math.max(0,mTR-mRTotal)); document.getElementById('mDistProf').innerText = formatNum(Math.max(0,mTP-mPTotal));
-        document.getElementById('mReqTodayRevDisp').innerText = formatNum(mRTR); document.getElementById('mReqTodayProfDisp').innerText = formatNum(mRTP);
-        updateBar('mBarRev', 'mRateTextRev', 'mDistBoxRev', mRR, false, 'mMotRev', day);
-        updateBar('mBarProf', 'mRateTextProf', 'mDistBoxProf', mRP, false, 'mMotProf', day);
-        let qWAcc = 0; for(let i=0; i<=mIdx; i++) { let dP = (i===mIdx)?day:getMonthDays(y,qMonths[i]); qWAcc += (dP/getMonthDays(y,qMonths[i]))*(c.weights[i]/100); }
-        document.getElementById('qSumRev').innerText = formatNum(qRAct); document.getElementById('qSumProf').innerText = formatNum(qPAct);
-        document.getElementById('qExpRev').innerText = formatNum(targetRev*qWAcc); document.getElementById('qExpProf').innerText = formatNum(targetProf*qWAcc);
-        document.getElementById('qDistRev').innerText = formatNum(Math.max(0,targetRev-qRAct)); document.getElementById('qDistProf').innerText = formatNum(Math.max(0,targetProf-qPAct));
-        updateBar('qBarRev', 'qRateTextRev', null, (targetRev===0?0:(qRAct/targetRev)*100), true, null, day);
-        updateBar('qBarProf', 'qRateTextProf', null, (targetProf===0?0:(qPAct/targetProf)*100), true, null, day);
+    async function saveDailyData() {
+        const ds = document.getElementById('currentDate').value;
+        cloudData.db[ds] = {
+            r: Number(document.getElementById('dailyRevInput').value),
+            p: Number(document.getElementById('dailyProfInput').value)
+        };
+        await saveToCloud();
+        alert('儲存成功');
     }
 
-    function updateBar(bid, tid, tbx, r, isq, mid, doy) {
-        const b = document.getElementById(bid); const t = document.getElementById(tid);
-        let dw = r > 100 ? 100 : r; let rs = r.toFixed(1) + '%';
-        b.style.width = dw + '%'; b.innerText = dw > 10 ? rs : ''; t.innerText = rs;
-        if (!isq && tbx) document.getElementById(tbx).style.backgroundColor = r >= 100 ? '#FFCDD2' : '#A5D6A7';
-        if (mid) {
-            const me = document.getElementById(mid);
-            const sm = ["🎉 太棒了！今日動態目標順利拿下！", "🔥 火力全開！請繼續保持這個氣勢！", "✨ 完美達標！今天的努力沒有白費！", "🚀 業績達陣！門市團隊超讚的表現！"];
-            const cm = ["💪 還差一點點！穩住陣腳，明天繼續衝刺！", "🏃‍♂️ 加把勁！調整腳步我們明天把它贏回來！", "🌟 別氣餒！把今天的不足化為明天的動力！", "🎯 目標就在前方，繼續加油千萬不要放棄！"];
-            let idx = (doy ? doy : 1) % 4; me.innerText = r >= 100 ? sm[idx] : cm[idx]; me.style.color = r >= 100 ? '#C62828' : '#1565C0';
-        }
-    }
-
-    // --- 設定管理 ---
-    function openSettingsModal() {
-        if(currentRole !== 'manager') return;
-        const d = new Date(document.getElementById('currentDate').value);
-        const y = d.getFullYear(); const q = getQuarter(d);
-        document.getElementById('settingsTitle').innerText = `${y} 年 ${q} 目標設定`;
-        if(!cloudData.configs[y]) cloudData.configs[y] = {};
-        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        let c = cloudData.configs[y][q];
-        for(let i=0; i<4; i++) {
-            document.getElementById(`cfgRev${i+1}`).value = c.revTiers[i]; document.getElementById(`cfgProf${i+1}`).value = c.profTiers[i];
-        }
-        document.getElementsByName('activeRev')[c.activeRevIdx || 0].checked = true; document.getElementsByName('activeProf')[c.activeProfIdx || 0].checked = true;
-        document.getElementById('cfgW1').value = c.weights[0]; document.getElementById('cfgW2').value = c.weights[1]; document.getElementById('cfgW3').value = c.weights[2];
-        document.getElementById('settingsModal').style.display = 'flex';
-    }
-    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
-    async function saveSettings() {
-        const d = new Date(document.getElementById('currentDate').value); const y = d.getFullYear(); const q = getQuarter(d);
-        let w = [Number(document.getElementById('cfgW1').value), Number(document.getElementById('cfgW2').value), Number(document.getElementById('cfgW3').value)];
-        if((w[0]+w[1]+w[2]) !== 100) { document.getElementById('weightWarning').innerText = "警告：權重加總須為 100%！"; return; }
-        let c = cloudData.configs[y][q];
-        for(let i=0; i<4; i++) { c.revTiers[i] = Number(document.getElementById(`cfgRev${i+1}`).value); c.profTiers[i] = Number(document.getElementById(`cfgProf${i+1}`).value); }
-        c.activeRevIdx = Number(document.querySelector('input[name="activeRev"]:checked').value);
-        c.activeProfIdx = Number(document.querySelector('input[name="activeProf"]:checked').value);
-        c.weights = w; closeSettingsModal(); showLoading(); await saveToCloud(); alert("設定同步成功！"); hideLoading();
-    }
-
-    // --- 🚀 歷史紀錄 (優化摺疊功能) ---
+    // --- 歷史管理與整月刪除 ---
     function openHistoryModal() {
         const container = document.getElementById('historyAccordionContainer');
-        const subtitle = document.getElementById('historySubtitle');
-        const yearSelect = document.getElementById('histYearSelect');
-        const qSelect = document.getElementById('histQuarterSelect');
+        const ys = document.getElementById('histYearSelect');
+        const qs = document.getElementById('histQuarterSelect');
 
-        if (yearSelect.innerHTML === "") {
-            const currentYear = new Date().getFullYear();
-            for(let i = currentYear + 1; i >= 2024; i--) yearSelect.add(new Option(i + " 年", i));
-            yearSelect.value = new Date(document.getElementById('currentDate').value).getFullYear();
-            qSelect.value = getQuarter(new Date(document.getElementById('currentDate').value));
+        if (ys.innerHTML === "") {
+            const cy = new Date().getFullYear();
+            for(let i = cy+1; i >= 2024; i--) ys.add(new Option(i + " 年", i));
+            ys.value = new Date().getFullYear();
+            qs.value = getQuarter(new Date());
         }
 
-        subtitle.innerText = currentRole === 'manager' ? "主管權限：修改後按更新。" : "唯讀模式：僅主管可修改。";
-
-        const targetY = yearSelect.value;
-        const targetQ = qSelect.value;
-        const targetMonths = getQuarterMonths(targetQ); // 例如 [4, 5, 6]
-
+        const targetY = ys.value;
+        const months = getQuarterMonths(qs.value);
         let html = "";
-        
-        // 針對該季的三個月分別建立摺疊區塊
-        targetMonths.forEach((month, index) => {
-            const monthName = month + "月";
-            const filteredDates = Object.keys(cloudData.db).filter(dateStr => {
-                const d = new Date(dateStr);
-                return d.getFullYear().toString() === targetY && (d.getMonth() + 1) === month;
-            }).sort((a, b) => new Date(b) - new Date(a));
 
-            // 預設展開最新的月份 (若是本季，展開最後一個月或當前月份)
-            const isActive = (index === targetMonths.length - 1) ? "active" : "";
+        months.forEach((m, idx) => {
+            const keys = Object.keys(cloudData.db).filter(k => {
+                const d = new Date(k);
+                return d.getFullYear().toString() === targetY && (d.getMonth()+1) === m;
+            }).sort((a,b) => new Date(b) - new Date(a));
 
+            const isLast = idx === months.length - 1;
             html += `
                 <div class="month-accordion">
                     <div class="month-header" onclick="toggleAccordion(this)">
-                        <span>📅 ${monthName} 紀錄 (${filteredDates.length} 筆)</span>
-                        <span class="month-arrow">▼</span>
+                        <span>📅 ${m}月 紀錄 (${keys.length} 筆)</span>
+                        <div class="month-actions">
+                            ${(currentRole === 'manager' && keys.length > 0) ? `<button class="btn-delete-month" onclick="deleteFullMonth('${targetY}', ${m}, event)">🗑️ 刪除整月</button>` : ''}
+                            <span class="month-arrow">▼</span>
+                        </div>
                     </div>
-                    <div class="month-content ${isActive}">
+                    <div class="month-content ${isLast ? 'active' : ''}">
                         <table class="history-table">
-                            <thead>
-                                <tr><th style="width:20%">日期</th><th style="width:30%">營業額</th><th style="width:30%">毛利</th>
-                                ${currentRole === 'manager' ? '<th style="width:20%">操作</th>' : ''}</tr>
-                            </thead>
+                            <thead><tr><th>日期</th><th>營業額</th><th>毛利</th>${currentRole==='manager'?'<th>操作</th>':''}</tr></thead>
                             <tbody>
-                                ${filteredDates.length === 0 ? `<tr><td colspan="4" style="color:#999; padding:20px;">本月尚無紀錄</td></tr>` : 
-                                    filteredDates.map(date => {
-                                        const v = cloudData.db[date];
-                                        return `
-                                            <tr>
-                                                <td style="font-weight:bold; color:#1565C0;">${date}</td>
-                                                ${currentRole === 'manager' ? 
-                                                    `<td><input type="number" id="hist_r_${date}" value="${v.r}"></td>
-                                                     <td><input type="number" id="hist_p_${date}" value="${v.p}"></td>
-                                                     <td><button class="btn-update" onclick="updateHistory('${date}')">更新</button>
-                                                         <button class="btn-delete" onclick="deleteHistory('${date}')">刪」</button></td>` :
-                                                    `<td class="readonly-num">$ ${formatNum(v.r)}</td>
-                                                     <td class="readonly-num">$ ${formatNum(v.p)}</td>`
-                                                }
-                                            </tr>
-                                        `;
-                                    }).join('')
-                                }
+                                ${keys.length === 0 ? '<tr><td colspan="4">無資料</td></tr>' : keys.map(k => `
+                                    <tr>
+                                        <td style="font-weight:bold">${k}</td>
+                                        ${currentRole==='manager' ? 
+                                        `<td><input type="number" id="hist_r_${k}" value="${cloudData.db[k].r}"></td>
+                                         <td><input type="number" id="hist_p_${k}" value="${cloudData.db[k].p}"></td>
+                                         <td><button class="btn-update" onclick="updateHistory('${k}')">更新</button><button class="btn-delete" onclick="deleteHistory('${k}')">刪</button></td>` :
+                                        `<td class="readonly-num">$ ${formatNum(cloudData.db[k].r)}</td><td class="readonly-num">$ ${formatNum(cloudData.db[k].p)}</td>`}
+                                    </tr>
+                                `).join('')}
                             </tbody>
                         </table>
                     </div>
                 </div>
             `;
         });
-
         container.innerHTML = html;
         document.getElementById('historyModal').style.display = 'flex';
     }
 
-    function toggleAccordion(header) {
-        const content = header.nextElementSibling;
-        const arrow = header.querySelector('.month-arrow');
-        
-        // 切換 active 類別
-        const isOpen = content.classList.contains('active');
-        
-        // 摺疊其他同層級月份 (可選，若想一次只開一個就加上)
-        // const allContents = document.querySelectorAll('.month-content');
-        // allContents.forEach(c => c.classList.remove('active'));
+    function toggleAccordion(h) {
+        const c = h.nextElementSibling;
+        c.classList.toggle('active');
+    }
 
-        if (isOpen) {
-            content.classList.remove('active');
-            header.parentElement.classList.remove('active');
-        } else {
-            content.classList.add('active');
-            header.parentElement.classList.add('active');
-        }
+    async function deleteFullMonth(y, m, e) {
+        e.stopPropagation();
+        if(!confirm(`⚠️ 確定要刪除 ${y}年 ${m}月 的「整月」所有資料嗎？此動作無法復原！`)) return;
+        Object.keys(cloudData.db).forEach(k => {
+            const d = new Date(k);
+            if(d.getFullYear().toString() === y && (d.getMonth()+1) === m) delete cloudData.db[k];
+        });
+        await saveToCloud();
+        openHistoryModal();
     }
 
     function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
-    async function updateHistory(dk) { if(currentRole !== 'manager') return; cloudData.db[dk] = { r: Number(document.getElementById(`hist_r_${dk}`).value), p: Number(document.getElementById(`hist_p_${dk}`).value) }; showLoading(); await saveToCloud(); alert(`${dk} 已更新！`); hideLoading(); loadInputForDate(); }
-    async function deleteHistory(dk) { if(currentRole !== 'manager') return; if(confirm(`刪除 ${dk} 紀錄？`)) { delete cloudData.db[dk]; showLoading(); await saveToCloud(); hideLoading(); openHistoryModal(); loadInputForDate(); } }
-    
-    async function saveDailyData() {
-        const ds = document.getElementById('currentDate').value;
-        const r = Number(document.getElementById('dailyRevInput').value); const p = Number(document.getElementById('dailyProfInput').value);
-        if(!ds) return; if (currentRole === 'employee' && ds !== getTodayString()) { alert("員工僅能存今日資料！"); return; }
-        cloudData.db[ds] = { r: r, p: p }; showLoading(); await saveToCloud(); hideLoading(); alert(`數據同步成功！`);
+    async function updateHistory(k) {
+        cloudData.db[k] = { r: Number(document.getElementById(`hist_r_${k}`).value), p: Number(document.getElementById(`hist_p_${k}`).value) };
+        await saveToCloud(); alert('更新完成'); loadInputForDate();
+    }
+    async function deleteHistory(k) {
+        if(confirm('刪除？')) { delete cloudData.db[k]; await saveToCloud(); openHistoryModal(); loadInputForDate(); }
     }
 
-    // --- 啟動程序 ---
+    // --- 計算 (保持原本邏輯) ---
+    function calculateDashboard() {
+        const ds = document.getElementById('currentDate').value; if(!ds) return;
+        const d = new Date(ds); const y = d.getFullYear(); const m = d.getMonth()+1; const day = d.getDate(); const q = getQuarter(d);
+        if(!cloudData.configs[y]) cloudData.configs[y] = {};
+        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        const c = cloudData.configs[y][q];
+        const tRev = c.revTiers[c.activeRevIdx]; const tProf = c.profTiers[c.activeProfIdx];
+        const qMs = getQuarterMonths(q); const mIdx = qMs.indexOf(m);
+        document.getElementById('mRevTargetName').innerText = tierNames[c.activeRevIdx];
+        document.getElementById('mProfTargetName').innerText = tierNames[c.activeProfIdx];
+        document.getElementById('qTargetRevDisp').innerText = formatNum(tRev);
+        document.getElementById('qTargetProfDisp').innerText = formatNum(tProf);
+
+        const curR = Number(document.getElementById('dailyRevInput').value) || 0;
+        const curP = Number(document.getElementById('dailyProfInput').value) || 0;
+        let qR = 0, qP = 0, mRB = 0, mPB = 0, pMR = 0, pMP = 0;
+
+        Object.entries(cloudData.db).forEach(([dk, v]) => {
+            const ed = new Date(dk);
+            if(ed.getFullYear() === y && getQuarter(ed) === q) {
+                if(dk < ds) {
+                    qR += v.r; qP += v.p;
+                    if((ed.getMonth()+1) < m) { pMR += v.r; pMP += v.p; }
+                    else if((ed.getMonth()+1) === m) { mRB += v.r; mPB += v.p; }
+                }
+            }
+        });
+
+        qR += curR; qP += curP;
+        let remW = 0; for(let i=mIdx; i<3; i++) remW += c.weights[i];
+        let wRatio = remW > 0 ? (c.weights[mIdx] / remW) : 1;
+        const mTR = Math.max(0, (tRev - pMR) * wRatio); const mTP = Math.max(0, (tProf - pMP) * wRatio);
+        const mDays = getMonthDays(y,m); const daysLeftToday = mDays - day + 1;
+        const mReqR = Math.max(0, (mTR - mRB) / daysLeftToday); const mReqP = Math.max(0, (mTP - mPB) / daysLeftToday);
+        
+        document.getElementById('mSumRev').innerText = formatNum(mRB + curR);
+        document.getElementById('mSumProf').innerText = formatNum(mPB + curP);
+        document.getElementById('mTargetRev').innerText = formatNum(mTR);
+        document.getElementById('mTargetProf').innerText = formatNum(mTP);
+        document.getElementById('mExpRev').innerText = formatNum(mTR * (day/mDays));
+        document.getElementById('mExpProf').innerText = formatNum(mTP * (day/mDays));
+        document.getElementById('mDistRev').innerText = formatNum(Math.max(0, mTR - (mRB + curR)));
+        document.getElementById('mDistProf').innerText = formatNum(Math.max(0, mTP - (mPB + curP)));
+        document.getElementById('mReqTodayRevDisp').innerText = formatNum(mReqR);
+        document.getElementById('mReqTodayProfDisp').innerText = formatNum(mReqP);
+        
+        updateBar('mBarRev', 'mRateTextRev', 'mDistBoxRev', (mReqR===0? (curR>0?100:0) : (curR/mReqR)*100), false, 'mMotRev', day);
+        updateBar('mBarProf', 'mRateTextProf', 'mDistBoxProf', (mReqP===0? (curP>0?100:0) : (curP/mReqP)*100), false, 'mMotProf', day);
+        
+        document.getElementById('qSumRev').innerText = formatNum(qR);
+        document.getElementById('qSumProf').innerText = formatNum(qP);
+        document.getElementById('qDistRev').innerText = formatNum(Math.max(0, tRev - qR));
+        document.getElementById('qDistProf').innerText = formatNum(Math.max(0, tProf - qP));
+        updateBar('qBarRev', 'qRateTextRev', null, (tRev===0?0:(qR/tRev)*100), true, null, day);
+        updateBar('qBarProf', 'qRateTextProf', null, (tProf===0?0:(qP/tProf)*100), true, null, day);
+    }
+
+    function updateBar(bid, tid, tbx, r, isq, mid, doy) {
+        const b = document.getElementById(bid); const t = document.getElementById(tid);
+        let dw = r > 100 ? 100 : r; let rs = r.toFixed(1) + '%';
+        b.style.width = dw + '%'; t.innerText = rs;
+        if(!isq && tbx) document.getElementById(tbx).style.backgroundColor = r >= 100 ? '#FFCDD2' : '#A5D6A7';
+        if(mid) {
+            const me = document.getElementById(mid);
+            const sm = ["🎉 太棒了！今日動態目標順利拿下！", "🔥 火力全開！請繼續保持這個氣勢！", "✨ 完美達標！今天的努力沒有白費！", "🚀 業績達陣！門市團隊超讚的表現！"];
+            const cm = ["💪 還差一點點！穩住陣腳，明天繼續衝刺！", "🏃‍♂️ 加把勁！調整腳步我們明天把它贏回來！", "🌟 別氣餒！把今天的不足化為明天的動力！", "🎯 目標就在前方，繼續加油千萬不要放棄！"];
+            me.innerText = r >= 100 ? sm[doy%4] : cm[doy%4];
+            me.style.color = r >= 100 ? '#C62828' : '#1565C0';
+        }
+    }
+
+    // --- 設定 ---
+    function openSettingsModal() {
+        const d = new Date(document.getElementById('currentDate').value);
+        const y = d.getFullYear(); const q = getQuarter(d);
+        document.getElementById('settingsTitle').innerText = `⚙️ ${y} ${q} 參數設定`;
+        if(!cloudData.configs[y]) cloudData.configs[y] = {};
+        if(!cloudData.configs[y][q]) cloudData.configs[y][q] = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        const c = cloudData.configs[y][q];
+        for(let i=1; i<=4; i++) { document.getElementById(`cfgRev${i}`).value = c.revTiers[i-1]; document.getElementById(`cfgProf${i}`).value = c.profTiers[i-1]; }
+        document.getElementsByName('activeRev')[c.activeRevIdx].checked = true;
+        document.getElementsByName('activeProf')[c.activeProfIdx].checked = true;
+        document.getElementById('cfgW1').value = c.weights[0]; document.getElementById('cfgW2').value = c.weights[1]; document.getElementById('cfgW3').value = c.weights[2];
+        document.getElementById('settingsModal').style.display = 'flex';
+    }
+    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
+    async function saveSettings() {
+        const d = new Date(document.getElementById('currentDate').value); const y = d.getFullYear(); const q = getQuarter(d);
+        const w = [Number(document.getElementById('cfgW1').value), Number(document.getElementById('cfgW2').value), Number(document.getElementById('cfgW3').value)];
+        if(w[0]+w[1]+w[2] !== 100) { document.getElementById('weightWarning').innerText = "權重須=100%"; return; }
+        const c = cloudData.configs[y][q];
+        for(let i=1; i<=4; i++) { c.revTiers[i-1] = Number(document.getElementById(`cfgRev${i}`).value); c.profTiers[i-1] = Number(document.getElementById(`cfgProf${i}`).value); }
+        c.activeRevIdx = Number(document.querySelector('input[name="activeRev"]:checked').value);
+        c.activeProfIdx = Number(document.querySelector('input[name="activeProf"]:checked').value);
+        c.weights = w; closeSettingsModal(); await saveToCloud(); alert('同步完成');
+    }
+
+    // --- 啟動 ---
     document.getElementById('currentDate').addEventListener('change', loadInputForDate);
     document.getElementById('dailyRevInput').addEventListener('input', calculateDashboard);
     document.getElementById('dailyProfInput').addEventListener('input', calculateDashboard);
-    
+
     window.onload = function() {
         document.getElementById('currentDate').value = getTodayString();
-        document.getElementById('roleSelect').value = 'employee';
-        currentRole = 'employee';
-        loadFromCloud(); 
+        loadFromCloud();
     };
 </script>
 </body>
